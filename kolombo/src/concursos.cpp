@@ -234,15 +234,27 @@ void concursos::desaparecer() {
 	}
 }
 
-void concursos::filtroInteligente(const QString &filtro)
-{
-   QString condicion;
-   condicion = "estado != \"Desaparecida\" and (anyo like '%%s%' or anilla like '%%s%'";
-   condicion += " or nacionalidad like '%%s%' or sexo like '%%s%' or nombre like '%%s%' ";
-   condicion += "or anyo || \"-\" || anilla || \"-\" || nacionalidad like '%%s%')";
-   condicion.replace ("%s", filtro);
-   listaGeneral->setFilter (condicion);
-   listaGeneral->refresh();
+void concursos::filtroInteligente(const QString &filtro) {
+    QString condicion = "";
+    condicion = "estado != \"Desaparecida\"";
+    if (filtro.length())
+        condicion += "and ";
+    QStringList cadenas = QStringList::split(" ", filtro);
+    if ( !cadenas.isEmpty() ) {
+        condicion += " ( 1 ";
+        for ( uint i = 0; i < cadenas.count(); i++ ) {
+            condicion += " AND ( 0 ";
+            condicion += "or anyo like '%" + cadenas[i] + "%' ";
+            condicion += "or anilla like '%" + cadenas[i] + "%' ";
+            condicion += "or nacionalidad like '%" + cadenas[i] + "%' ";
+            condicion += "or sexo like '%" + cadenas[i] + "%' ";
+            condicion += "or nombre like '%" + cadenas[i] + "%' ";
+            condicion += ")";
+        }
+        condicion += " ) ";
+    }
+    listaGeneral->setFilter (condicion);
+    listaGeneral->refresh();
 }
 
 

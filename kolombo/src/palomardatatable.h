@@ -56,7 +56,7 @@ private:
     typedef QValueList<QColor> ColorList;
     ColorList coloresAnyos;
     QTimer *timerFiltro;
-    QString filtro;
+    QString *filtro;
     
 public slots:
     virtual void polish();

@@ -29,6 +29,7 @@
 #include <qrect.h>
 #include <qcolor.h>
 #include <qstring.h>
+#include <qstringlist.h>
 #include <qtimer.h>
 
 #include <qdrawutil.h>
@@ -37,6 +38,7 @@ palomarDataTable::palomarDataTable( QWidget * parent, const char * name)
  : QDataTable(parent, name)
  , timerFiltro(new QTimer(this))
 {
+    filtro = new QString();
     // Cacho de puthon para generar los colorcitos ...
     //for i in range (0, 40):
     //    print "coloresAnyos.append(QColor (" + str(int(random.random()*255)) + ", " + str(int(random.random()*255)) + ", "+ str(int(random.random()*255)) + "));"
@@ -257,19 +259,34 @@ void palomarDataTable::verBusqueda(const QString condicion) {
 }
 
 void palomarDataTable::filtroInteligente (const QString &filtro) {
-    this->filtro = filtro;
+    *(this->filtro) = filtro;
     timerFiltro->start( 280, true );
 }
 
 void palomarDataTable::filtroInteligenteTimeout () {
-   timerFiltro->stop();
-   QString condicion;
-   condicion = "anyo like '%%s%' or anilla like '%%s%' or nacionalidad like '%%s%' or sexo like '%%s%' ";
-   condicion += "or plumaje like '%%s%' or ojo like '%%s%' or estado like '%%s%' or nombre like '%%s%' ";
-   condicion += "or padre like '%%s%' or madre like '%%s%'or anyo || \"-\" || anilla || \"-\" || nacionalidad like '%%s%'";
-   condicion.replace ("%s", filtro);
-   setFilter (condicion);
-   refresh();
+    timerFiltro->stop();
+    QString condicion;
+    QStringList cadenas = QStringList::split(" ", *filtro);
+    if ( !cadenas.isEmpty() ) {
+        condicion += " ( 1 ";
+        for ( uint i = 0; i < cadenas.count(); i++ ) {
+            condicion += " AND ( 0 ";
+            condicion += "or anyo like '%" + cadenas[i] + "%' ";
+            condicion += "or anilla like '%" + cadenas[i] + "%' ";
+            condicion += "or nacionalidad like '%" + cadenas[i] + "%' ";
+            condicion += "or sexo like '%" + cadenas[i] + "%' ";
+            condicion += "or plumaje like '%" + cadenas[i] + "%' ";
+            condicion += "or ojo like '%" + cadenas[i] + "%' ";
+            condicion += "or estado like '%" + cadenas[i] + "%' ";
+            condicion += "or nombre like '%" + cadenas[i] + "%' ";
+            condicion += "or padre like '%" + cadenas[i] + "%' ";
+            condicion += "or madre like '%" + cadenas[i] + "%'";
+            condicion += ")";
+        }
+        condicion += " ) ";
+    }
+    setFilter (condicion);
+    refresh();
 }
 
 void palomarDataTable::crearPareja() {
