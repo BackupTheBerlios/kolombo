@@ -1,0 +1,159 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>buscarWdg</class>
+<widget class="QWidget">
+    <property name="name">
+        <cstring>buscarWdg</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>351</width>
+            <height>140</height>
+        </rect>
+    </property>
+    <property name="minimumSize">
+        <size>
+            <width>280</width>
+            <height>140</height>
+        </size>
+    </property>
+    <property name="caption">
+        <string>Form1</string>
+    </property>
+    <grid>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QLabel" row="0" column="0">
+            <property name="name">
+                <cstring>textLabel1</cstring>
+            </property>
+            <property name="text">
+                <string>Anilla:</string>
+            </property>
+        </widget>
+        <widget class="QLabel" row="1" column="0">
+            <property name="name">
+                <cstring>textLabel2</cstring>
+            </property>
+            <property name="text">
+                <string>Año:</string>
+            </property>
+        </widget>
+        <widget class="QLabel" row="2" column="0">
+            <property name="name">
+                <cstring>textLabel3</cstring>
+            </property>
+            <property name="text">
+                <string>Sexo:</string>
+            </property>
+        </widget>
+        <widget class="QLabel" row="3" column="0">
+            <property name="name">
+                <cstring>textLabel4</cstring>
+            </property>
+            <property name="text">
+                <string>Estado:</string>
+            </property>
+        </widget>
+        <widget class="QComboBox" row="3" column="1">
+            <item>
+                <property name="text">
+                    <string>Cualquiera</string>
+                </property>
+            </item>
+            <item>
+                <property name="text">
+                    <string>Vuelo</string>
+                </property>
+            </item>
+            <item>
+                <property name="text">
+                    <string>Reproducción</string>
+                </property>
+            </item>
+            <item>
+                <property name="text">
+                    <string>Desaparecida</string>
+                </property>
+            </item>
+            <property name="name">
+                <cstring>estado</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>7</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="toolTip" stdset="0">
+                <string>Estado de la paloma a buscar</string>
+            </property>
+        </widget>
+        <widget class="QComboBox" row="2" column="1">
+            <item>
+                <property name="text">
+                    <string>Cualquiera</string>
+                </property>
+            </item>
+            <item>
+                <property name="text">
+                    <string>Macho</string>
+                </property>
+            </item>
+            <item>
+                <property name="text">
+                    <string>Hembra</string>
+                </property>
+            </item>
+            <property name="name">
+                <cstring>sexo</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>7</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="toolTip" stdset="0">
+                <string>Sexo de la paloma a buscar</string>
+            </property>
+        </widget>
+        <widget class="QComboBox" row="1" column="1">
+            <item>
+                <property name="text">
+                    <string>Cualquiera</string>
+                </property>
+            </item>
+            <property name="name">
+                <cstring>anyo</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>7</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="toolTip" stdset="0">
+                <string>Año de nacimiento de la paloma a buscar</string>
+            </property>
+        </widget>
+        <widget class="QLineEdit" row="0" column="1">
+            <property name="name">
+                <cstring>numAnilla</cstring>
+            </property>
+            <property name="toolTip" stdset="0">
+                <string>Número de la anilla de la paloma a buscar</string>
+            </property>
+        </widget>
+    </grid>
+</widget>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>
