@@ -1,0 +1,220 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>tipoSueltaWdg</class>
+<widget class="QWidget">
+    <property name="name">
+        <cstring>tipoSueltaWdg</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>600</width>
+            <height>359</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>Tipos de sueltas</string>
+    </property>
+    <hbox>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QGroupBox">
+            <property name="name">
+                <cstring>groupBox2</cstring>
+            </property>
+            <property name="title">
+                <string>Datos del nuevo tipo de suelta</string>
+            </property>
+            <vbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QLayoutWidget">
+                    <property name="name">
+                        <cstring>layout1</cstring>
+                    </property>
+                    <hbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QLabel">
+                            <property name="name">
+                                <cstring>textLabel1</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Nombre del tipo:</string>
+                            </property>
+                        </widget>
+                        <widget class="QLineEdit">
+                            <property name="name">
+                                <cstring>nombreTipo</cstring>
+                            </property>
+                        </widget>
+                        <spacer>
+                            <property name="name">
+                                <cstring>spacer1</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Horizontal</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>40</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                        </spacer>
+                    </hbox>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel2</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Descripción:</string>
+                    </property>
+                </widget>
+                <widget class="QTextEdit">
+                    <property name="name">
+                        <cstring>descripcionTipo</cstring>
+                    </property>
+                </widget>
+                <widget class="QLayoutWidget">
+                    <property name="name">
+                        <cstring>layout4</cstring>
+                    </property>
+                    <hbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="KPushButton">
+                            <property name="name">
+                                <cstring>InsertButton</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Insertar</string>
+                            </property>
+                        </widget>
+                        <widget class="KPushButton">
+                            <property name="name">
+                                <cstring>clearButton</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Limpiar</string>
+                            </property>
+                        </widget>
+                    </hbox>
+                </widget>
+            </vbox>
+        </widget>
+        <widget class="QGroupBox">
+            <property name="name">
+                <cstring>groupBox1</cstring>
+            </property>
+            <property name="title">
+                <string>Tipos disponibles</string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QDataTable" row="0" column="0">
+                    <column>
+                        <property name="text">
+                            <string>Nombre</string>
+                        </property>
+                        <property name="pixmap">
+                            <pixmap></pixmap>
+                        </property>
+                        <property name="field">
+                            <string>nombre</string>
+                        </property>
+                    </column>
+                    <column>
+                        <property name="text">
+                            <string>Descripcion</string>
+                        </property>
+                        <property name="pixmap">
+                            <pixmap></pixmap>
+                        </property>
+                        <property name="field">
+                            <string>descripcion</string>
+                        </property>
+                    </column>
+                    <property name="name">
+                        <cstring>tablaSueltas</cstring>
+                    </property>
+                    <property name="readOnly">
+                        <bool>true</bool>
+                    </property>
+                    <property name="sorting">
+                        <bool>true</bool>
+                    </property>
+                    <property name="confirmInsert">
+                        <bool>true</bool>
+                    </property>
+                    <property name="confirmUpdate">
+                        <bool>true</bool>
+                    </property>
+                    <property name="confirmDelete">
+                        <bool>true</bool>
+                    </property>
+                    <property name="confirmCancels">
+                        <bool>true</bool>
+                    </property>
+                    <property name="sort">
+                        <stringlist>
+                            <string>[nombre] ASC</string>
+                        </stringlist>
+                    </property>
+                    <property name="database" stdset="0">
+                        <stringlist>
+                            <string>palomar</string>
+                            <string>tipoSuelta</string>
+                        </stringlist>
+                    </property>
+                </widget>
+            </grid>
+        </widget>
+    </hbox>
+</widget>
+<connections>
+    <connection>
+        <sender>clearButton</sender>
+        <signal>clicked()</signal>
+        <receiver>descripcionTipo</receiver>
+        <slot>clear()</slot>
+    </connection>
+    <connection>
+        <sender>clearButton</sender>
+        <signal>clicked()</signal>
+        <receiver>nombreTipo</receiver>
+        <slot>clear()</slot>
+    </connection>
+    <connection>
+        <sender>InsertButton</sender>
+        <signal>clicked()</signal>
+        <receiver>tipoSueltaWdg</receiver>
+        <slot>insertTipo()</slot>
+    </connection>
+    <connection>
+        <sender>tablaSueltas</sender>
+        <signal>contextMenuRequested(int,int,const QPoint&amp;)</signal>
+        <receiver>tipoSueltaWdg</receiver>
+        <slot>contextTablaSueltas(int,int,const QPoint&amp;)</slot>
+    </connection>
+</connections>
+<slots>
+    <slot>insertTipo()</slot>
+    <slot>contextTablaSueltas(int row, int col, const QPoint &amp; pos)</slot>
+</slots>
+<layoutdefaults spacing="6" margin="11"/>
+<includehints>
+    <includehint>kpushbutton.h</includehint>
+    <includehint>kpushbutton.h</includehint>
+</includehints>
+</UI>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE kcfg SYSTEM "http://www.kde.org/standards/kcfg/1.0/kcfg.dtd">
+<kcfg> 
+
+	<kcfgfile name="kbird2rc"/> 
+
+	<group name="Personal"> 
+		<entry name="calleP" type="String"> 
+			<label>Dato de la dirección, calle.</label> 
+		</entry> 
+		<entry name="clubP" type="String"> 
+			<label>Club colombófilo al que pertenece.</label> 
+		</entry> 
+		<entry name="dniP" type="String"> 
+			<label>DNI del colombófilo.</label> 
+		</entry> 
+		<entry name="licenciaP" type="String">
+			<label>Número de licencia del colombófilo.</label>
+		</entry>
+		<entry name="nombreP" type="String">
+			<label>Nombre del colombófilo</label>
+		</entry>
+		<entry name="numeroP" type="String">
+			<label>Dato de la dirección, número del domicilio.</label>
+		</entry>
+		<entry name="poblacionP" type="String">
+			<label>Dato de la dirección, población.</label>
+		</entry>
+		<entry name="provinciaP" type="String">
+			<label>Dato de la dirección, provincia.</label>
+		</entry>
+	</group>
+
+	<group name="Palomar"> 
+		<entry name="ultimaAnilla" type="Int"> 
+			<label>Última anilla en el palomar.</label>
+			<default>0</default> 
+		</entry> 
+	</group>
+
+	<group name="General"> 
+		<entry name="connectOnStart" type="Bool"> 
+			<label>¿Conectar al inicio de la aplicación a la base de datos?</label>
+			<default>true</default> 
+		</entry> 
+		<entry name="updateURL" type="String"> 
+			<label>URL del fichero que se consulta para buscar actualizaciones</label>
+			<default>http://croasanaso.sytes.net/kolombo/update.xml</default> 
+		</entry>
+		<entry name="version" type="String"> 
+			<label>Número de versión actual</label>
+			<default>2.6.0</default> 
+		</entry>
+	</group>
+
+</kcfg>

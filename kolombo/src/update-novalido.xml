@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE update SYSTEM "/home/heaven/cvs/kolombo/src/update.dtd">
+<update>
+   <version current="true" number="2.7.0">
+      <url type="bin">http://croasanaso.sytes.net/kolombo/2.7.0/kbird2</url>
+      <url
+type="src">http://croasanaso.sytes.net/kolombo/2.7.0/kbird2.tar.bz2</url>
+      <url
+type="deb">http://croasanaso.sytes.net/kolombo/2.7.0/kbird2_2.7.0.deb</url>
+      <url
+type="rpm">http://croasanaso.sytes.net/kolombo/2.7.0/kbird2-2.7.0.rmp</url>
+      <changelog>
+         <optimizations>
+            <item>Se ha acelerado la consulta sobre la tabla de parejas</item>
+         </optimizations>
+         <optimizations>
+            <item>Se ha acelerado la consulta sobre la tabla de parejas</item>
+         </optimizations>
+         <features>
+            <item>Añadidas nuevas estadísticas</item>
+         </features>
+         <fixes>
+            <item level="1">Las busquedas no explotan</item>
+            <item level="5">Los combos de las parejas y de los padres se listan
+correctamente</item>
+         </fixes>
+      </changelog>
+      <todo>
+         <item>Anadir opción en la configuración para mostrar solo las palomas
+en reproducción o todas las que no estén d
+esaparecidas en los combos de las parejas y de los padres.</item>
+         <item>Mejorar el soporte para las sueltas</item>
+         <item>Comenzar la sección de viajes y palmarés</item>
+      </todo>
+   </version>
+</update>
+

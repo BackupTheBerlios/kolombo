@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!ELEMENT update (version*)>
+<!ELEMENT version (url+, changelog?, todo?)>
+	<!ATTLIST version
+		number CDATA #REQUIRED
+		current (true|false) #IMPLIED>
+<!ELEMENT url (#PCDATA)>
+	<!ATTLIST url
+		type (bin|src|deb|rpm) #REQUIRED>
+<!ELEMENT changelog (optimizations?, features?, fixes?)>
+<!ELEMENT optimizations (item+)>
+<!ELEMENT item (#PCDATA)>
+	<!ATTLIST item
+		level CDATA #IMPLIED>
+<!ELEMENT features (item+)>
+<!ELEMENT fixes (item+)>
+<!ELEMENT todo (item+)>

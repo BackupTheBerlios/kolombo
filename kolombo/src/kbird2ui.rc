@@ -1,0 +1,58 @@
+<!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
+<kpartgui name="kbird2" version="1">
+	<MenuBar>
+		<Menu name="Ver"><text>Ver</text>
+			<Action name="verReproducionAction"/>
+			<Action name="verVueloAction"/>
+			<Action name="verDesaparecidaAction"/>
+			<Action name="verTodasAction"/>
+			<Action name="verCensoAction"/>
+		</Menu>
+		<Menu name="Herramientas"><text>Herramientas</text>
+			<Action name="buscarAction"/>
+			<Action name="ManageParameters"/>
+			<Menu name="Mantenimiento"><text>Mantenimiento</text>
+				<Action name="updAction"/>
+				<Action name="bkpAction"/>
+			</Menu>
+		</Menu>
+		<Menu name="Parejas"><text>Parejas</text>
+			<Action name="eliminarParejaAction"/>
+			<Action name="editarParejaAction"/>
+			<Action name="nuevaParejaAction"/>
+			<Action name="nuevoHijoAction"/>
+		</Menu>
+		<Menu name="Palomas"><text>Palomas</text>
+			<Action name="eliminarPalomaAction"/>
+			<Action name="cambiarSexoAction"/>
+			<Menu name="Palomas-estado"><text>Estado</text>
+				<Action name="estadoDesaparecidaAction"/>
+				<Action name="estadoVueloAction"/>
+				<Action name="estadoReproduccionAction"/>
+			</Menu>
+		</Menu>
+		<Menu name="estadisticas"><text>Estadisticas</text>
+			<Action name="parejasStatsAction"/>
+			<Action name="generalStatsAction"/>
+		</Menu>
+	</MenuBar>
+	
+	<ToolBar name="MiToolbar" fullWidth="false" newline="true" >
+		<Action name="buscarAction"/>
+	</ToolBar>
+	
+	<ToolBar name="listadosToolbar" fullWidth="false" newline="false" >
+		<Action name="eliminarPalomaAction"/>
+		<Action name="cambiarSexoAction"/>
+		<Action name="estadoDesaparecidaAction"/>
+		<Action name="estadoVueloAction"/>
+		<Action name="estadoReproduccionAction"/>
+	</ToolBar>
+	
+	<ToolBar name="parejasToolbar" fullWidth="false" newline="false" >
+		<Action name="eliminarParejaAction"/>
+		<Action name="editarParejaAction"/>
+		<Action name="nuevaParejaAction"/>
+		<Action name="nuevoHijoAction"/>
+	</ToolBar>
+</kpartgui>

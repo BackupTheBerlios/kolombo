@@ -1,0 +1,518 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>concursosWdg</class>
+<widget class="QWidget">
+    <property name="name">
+        <cstring>concursosWdg</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>671</width>
+            <height>607</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>Sueltas de esta campaña</string>
+    </property>
+    <property name="toolTip" stdset="0">
+        <string></string>
+    </property>
+    <vbox>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QLayoutWidget">
+            <property name="name">
+                <cstring>layout8</cstring>
+            </property>
+            <hbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QGroupBox">
+                    <property name="name">
+                        <cstring>groupBox1</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>3</hsizetype>
+                            <vsizetype>1</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="title">
+                        <string>Seleccione el concurso</string>
+                    </property>
+                    <hbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QComboBox">
+                            <property name="name">
+                                <cstring>comboSueltas</cstring>
+                            </property>
+                            <property name="sizePolicy">
+                                <sizepolicy>
+                                    <hsizetype>3</hsizetype>
+                                    <vsizetype>0</vsizetype>
+                                    <horstretch>0</horstretch>
+                                    <verstretch>0</verstretch>
+                                </sizepolicy>
+                            </property>
+                            <property name="duplicatesEnabled">
+                                <bool>false</bool>
+                            </property>
+                        </widget>
+                        <widget class="QPushButton">
+                            <property name="name">
+                                <cstring>botonNuevaSuelta</cstring>
+                            </property>
+                            <property name="sizePolicy">
+                                <sizepolicy>
+                                    <hsizetype>1</hsizetype>
+                                    <vsizetype>1</vsizetype>
+                                    <horstretch>0</horstretch>
+                                    <verstretch>0</verstretch>
+                                </sizepolicy>
+                            </property>
+                            <property name="text">
+                                <string>Nueva suelta</string>
+                            </property>
+                        </widget>
+                    </hbox>
+                </widget>
+                <widget class="QGroupBox">
+                    <property name="name">
+                        <cstring>groupBox2</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>1</hsizetype>
+                            <vsizetype>1</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="title">
+                        <string>Hora de suelta</string>
+                    </property>
+                    <vbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QTimeEdit">
+                            <property name="name">
+                                <cstring>horaSuelta</cstring>
+                            </property>
+                            <property name="sizePolicy">
+                                <sizepolicy>
+                                    <hsizetype>1</hsizetype>
+                                    <vsizetype>1</vsizetype>
+                                    <horstretch>0</horstretch>
+                                    <verstretch>0</verstretch>
+                                </sizepolicy>
+                            </property>
+                        </widget>
+                    </vbox>
+                </widget>
+            </hbox>
+        </widget>
+        <widget class="QSplitter">
+            <property name="name">
+                <cstring>splitterConcursos</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>7</hsizetype>
+                    <vsizetype>7</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="orientation">
+                <enum>Horizontal</enum>
+            </property>
+            <widget class="QGroupBox">
+                <property name="name">
+                    <cstring>groupBox8</cstring>
+                </property>
+                <property name="title">
+                    <string>Palomas disponibles para encestar</string>
+                </property>
+                <vbox>
+                    <property name="name">
+                        <cstring>unnamed</cstring>
+                    </property>
+                    <widget class="QLayoutWidget">
+                        <property name="name">
+                            <cstring>layout6</cstring>
+                        </property>
+                        <hbox>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <spacer>
+                                <property name="name">
+                                    <cstring>spacer3</cstring>
+                                </property>
+                                <property name="orientation">
+                                    <enum>Horizontal</enum>
+                                </property>
+                                <property name="sizeType">
+                                    <enum>Expanding</enum>
+                                </property>
+                                <property name="sizeHint">
+                                    <size>
+                                        <width>40</width>
+                                        <height>20</height>
+                                    </size>
+                                </property>
+                            </spacer>
+                            <widget class="QPushButton">
+                                <property name="name">
+                                    <cstring>botonCesta</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Añadir a la cesta</string>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>Añade la paloma seleccionada a la cesta</string>
+                                </property>
+                            </widget>
+                        </hbox>
+                    </widget>
+                    <widget class="QDataTable">
+                        <column>
+                            <property name="text">
+                                <string>Año</string>
+                            </property>
+                            <property name="field">
+                                <string>anyo</string>
+                            </property>
+                        </column>
+                        <column>
+                            <property name="text">
+                                <string>Anilla</string>
+                            </property>
+                            <property name="field">
+                                <string>anilla</string>
+                            </property>
+                        </column>
+                        <column>
+                            <property name="text">
+                                <string>Nacionalidad</string>
+                            </property>
+                            <property name="field">
+                                <string>nacionalidad</string>
+                            </property>
+                        </column>
+                        <column>
+                            <property name="text">
+                                <string>Nombre</string>
+                            </property>
+                            <property name="field">
+                                <string>nombre</string>
+                            </property>
+                        </column>
+                        <property name="name">
+                            <cstring>listaGeneral</cstring>
+                        </property>
+                        <property name="readOnly">
+                            <bool>true</bool>
+                        </property>
+                        <property name="sorting">
+                            <bool>true</bool>
+                        </property>
+                        <property name="filter">
+                            <string>estado != "Desaparecida"</string>
+                        </property>
+                        <property name="database" stdset="0">
+                            <stringlist>
+                                <string>palomar</string>
+                                <string>listaGeneral</string>
+                            </stringlist>
+                        </property>
+                        <property name="toolTip" stdset="0">
+                            <string>Haciendo doble click sobre una fila se añadirá la paloma seleccionada a la cesta</string>
+                        </property>
+                    </widget>
+                </vbox>
+            </widget>
+            <widget class="QGroupBox">
+                <property name="name">
+                    <cstring>groupBox7</cstring>
+                </property>
+                <property name="title">
+                    <string>Palomas encestadas</string>
+                </property>
+                <vbox>
+                    <property name="name">
+                        <cstring>unnamed</cstring>
+                    </property>
+                    <widget class="QDataTable">
+                        <column>
+                            <property name="text">
+                                <string>Año</string>
+                            </property>
+                            <property name="field">
+                                <string>anyo</string>
+                            </property>
+                        </column>
+                        <column>
+                            <property name="text">
+                                <string>Anilla</string>
+                            </property>
+                            <property name="field">
+                                <string>anilla</string>
+                            </property>
+                        </column>
+                        <column>
+                            <property name="text">
+                                <string>Nacionalidad</string>
+                            </property>
+                            <property name="field">
+                                <string>nacionalidad</string>
+                            </property>
+                        </column>
+                        <column>
+                            <property name="text">
+                                <string>Modalidad</string>
+                            </property>
+                            <property name="field">
+                                <string>modalidad</string>
+                            </property>
+                        </column>
+                        <column>
+                            <property name="text">
+                                <string>Comprobada</string>
+                            </property>
+                            <property name="field">
+                                <string>comprobada</string>
+                            </property>
+                        </column>
+                        <column>
+                            <property name="text">
+                                <string>Velocidad (Km/h)</string>
+                            </property>
+                            <property name="field">
+                                <string>velocidad</string>
+                            </property>
+                        </column>
+                        <property name="name">
+                            <cstring>listaConcursantes</cstring>
+                        </property>
+                        <property name="readOnly">
+                            <bool>true</bool>
+                        </property>
+                        <property name="sorting">
+                            <bool>true</bool>
+                        </property>
+                        <property name="nullText">
+                            <string></string>
+                        </property>
+                        <property name="database" stdset="0">
+                            <stringlist>
+                                <string>palomar</string>
+                                <string>vistaConcursantes</string>
+                            </stringlist>
+                        </property>
+                        <property name="toolTip" stdset="0">
+                            <string>Haciendo doble click sobre una fila se comprobará a la paloma</string>
+                        </property>
+                    </widget>
+                    <widget class="QGroupBox">
+                        <property name="name">
+                            <cstring>groupBox6</cstring>
+                        </property>
+                        <property name="title">
+                            <string>Acciones</string>
+                        </property>
+                        <hbox>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QPushButton">
+                                <property name="name">
+                                    <cstring>botonEliminar</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Eliminar</string>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>Saca de la cesta la paloma seleccionada</string>
+                                </property>
+                            </widget>
+                            <widget class="QPushButton">
+                                <property name="name">
+                                    <cstring>botonComprobar</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Comprobar</string>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>Comprueba la paloma seleccionada</string>
+                                </property>
+                            </widget>
+                            <widget class="QPushButton">
+                                <property name="name">
+                                    <cstring>botonDesaparecer</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Desaparecida</string>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>Marca como desaparecida la paloma seleccionada</string>
+                                </property>
+                            </widget>
+                        </hbox>
+                    </widget>
+                    <widget class="QGroupBox">
+                        <property name="name">
+                            <cstring>groupBox5</cstring>
+                        </property>
+                        <property name="title">
+                            <string>Establecer designación</string>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QPushButton" row="0" column="0">
+                                <property name="name">
+                                    <cstring>botonDesignada</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Designada</string>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>Establece la modalidad a Designada de la paloma seleccionada</string>
+                                </property>
+                            </widget>
+                            <widget class="QPushButton" row="1" column="0">
+                                <property name="name">
+                                    <cstring>botonSerie</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Serie</string>
+                                </property>
+                            </widget>
+                            <widget class="QPushButton" row="1" column="1">
+                                <property name="name">
+                                    <cstring>botonFueraConcurso</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Fuera de concurso</string>
+                                </property>
+                            </widget>
+                            <widget class="QPushButton" row="0" column="1">
+                                <property name="name">
+                                    <cstring>botonConcurso</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Concurso</string>
+                                </property>
+                            </widget>
+                        </grid>
+                    </widget>
+                </vbox>
+            </widget>
+        </widget>
+    </vbox>
+</widget>
+<connections>
+    <connection>
+        <sender>botonNuevaSuelta</sender>
+        <signal>clicked()</signal>
+        <receiver>concursosWdg</receiver>
+        <slot>nuevaSuelta()</slot>
+    </connection>
+    <connection>
+        <sender>horaSuelta</sender>
+        <signal>valueChanged(const QTime&amp;)</signal>
+        <receiver>concursosWdg</receiver>
+        <slot>horaSueltaCambiada(const QTime&amp;)</slot>
+    </connection>
+    <connection>
+        <sender>comboSueltas</sender>
+        <signal>activated(int)</signal>
+        <receiver>concursosWdg</receiver>
+        <slot>sueltaCambiada(int)</slot>
+    </connection>
+    <connection>
+        <sender>botonDesignada</sender>
+        <signal>clicked()</signal>
+        <receiver>concursosWdg</receiver>
+        <slot>setDesignada()</slot>
+    </connection>
+    <connection>
+        <sender>botonConcurso</sender>
+        <signal>clicked()</signal>
+        <receiver>concursosWdg</receiver>
+        <slot>setConcurso()</slot>
+    </connection>
+    <connection>
+        <sender>botonSerie</sender>
+        <signal>clicked()</signal>
+        <receiver>concursosWdg</receiver>
+        <slot>setSerie()</slot>
+    </connection>
+    <connection>
+        <sender>botonEliminar</sender>
+        <signal>clicked()</signal>
+        <receiver>concursosWdg</receiver>
+        <slot>eliminar()</slot>
+    </connection>
+    <connection>
+        <sender>botonComprobar</sender>
+        <signal>clicked()</signal>
+        <receiver>concursosWdg</receiver>
+        <slot>comprobarSlot()</slot>
+    </connection>
+    <connection>
+        <sender>botonDesaparecer</sender>
+        <signal>clicked()</signal>
+        <receiver>concursosWdg</receiver>
+        <slot>desaparecer()</slot>
+    </connection>
+    <connection>
+        <sender>botonFueraConcurso</sender>
+        <signal>clicked()</signal>
+        <receiver>concursosWdg</receiver>
+        <slot>setFueraConcurso()</slot>
+    </connection>
+    <connection>
+        <sender>botonCesta</sender>
+        <signal>clicked()</signal>
+        <receiver>concursosWdg</receiver>
+        <slot>encestar()</slot>
+    </connection>
+    <connection>
+        <sender>listaGeneral</sender>
+        <signal>doubleClicked(int,int,int,const QPoint&amp;)</signal>
+        <receiver>concursosWdg</receiver>
+        <slot>encestar()</slot>
+    </connection>
+    <connection>
+        <sender>listaConcursantes</sender>
+        <signal>doubleClicked(int,int,int,const QPoint&amp;)</signal>
+        <receiver>concursosWdg</receiver>
+        <slot>comprobarSlot()</slot>
+    </connection>
+</connections>
+<slots>
+    <slot>nuevaSuelta()</slot>
+    <slot>horaSueltaCambiada(const QTime &amp;hora)</slot>
+    <slot>sueltaCambiada(int indice)</slot>
+    <slot>setDesignada()</slot>
+    <slot>setConcurso()</slot>
+    <slot>setSerie()</slot>
+    <slot>eliminar()</slot>
+    <slot>comprobarSlot()</slot>
+    <slot>desaparecer()</slot>
+    <slot>setFueraConcurso()</slot>
+    <slot>encestar()</slot>
+</slots>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>
