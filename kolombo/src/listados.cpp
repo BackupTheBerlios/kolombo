@@ -215,11 +215,8 @@ void listados::showEvent( QShowEvent *e )
 }
 
 void listados::updateSeleccion () {
-	if ((tablaListados->numRows() > 0) and (tablaListados->currentSelection () != -1)) {
-		config().anillaSeleccion = tablaListados->currentRecord()->value(indicePalomaID).toInt();
-//		qWarning ("Seleccionado: " + config().anillaSeleccion);
-	}
-	
+    if (tablaListados->currentRecord())
+        config().anillaSeleccion = tablaListados->currentRecord()->value(indicePalomaID).toInt();
 }
 
 int listados::printBase (QPainter *p, KPrinter *printer, int pageNo) {

@@ -31,7 +31,8 @@ kbird2_SOURCES = main.cpp kbird2.cpp kbird2view.cpp kbird2iface.skel listados.h 
 kde_kcfg_DATA = kbird2.kcfg
 
 # these are the headers for your project
-noinst_HEADERS = kbird2.h kbird2view.h pref.h buscar.h parejasstats.h basechart.h generalstats.h suelta.h concursos.h nuevoconcurso.h comprobar.h
+noinst_HEADERS = kbird2.h kbird2view.h pref.h buscar.h parejasstats.h \
+	basechart.h generalstats.h suelta.h concursos.h nuevoconcurso.h comprobar.h
 
 # client stuff
 kbird2_client_LDFLAGS = $(KDE_RPATH) $(all_libraries)

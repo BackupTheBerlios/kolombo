@@ -815,35 +815,35 @@ void kbird2::contextMenu (int row, int col, const QPoint & pos) {
 void kbird2::eliminarPaloma()
 {
 	if (m_view->iconList->activePageIndex())
-		m_view->parejasP->eliminarPaloma();
+		m_view->parejasP->tablaHijos->eliminarPaloma();
 	else
 		m_view->listadosP->tablaListados->eliminarPaloma();
 }
 void kbird2::cambioSexo()
 {
 	if (m_view->iconList->activePageIndex())
-		m_view->parejasP->cambioSexo();
+		m_view->parejasP->tablaHijos->cambioSexo();
 	else
 		m_view->listadosP->tablaListados->cambioSexo();
 }
 void kbird2::estadoDesaparecida()
 {
 	if (m_view->iconList->activePageIndex())
-		m_view->parejasP->estadoDesaparecida();
+		m_view->parejasP->tablaHijos->estadoDesaparecida();
 	else
 		m_view->listadosP->tablaListados->estadoDesaparecida();
 }
 void kbird2::estadoVuelo()
 {
 	if (m_view->iconList->activePageIndex())
-		m_view->parejasP->estadoVuelo();
+		m_view->parejasP->tablaHijos->estadoVuelo();
 	else
 		m_view->listadosP->tablaListados->estadoVuelo();
 }
 void kbird2::estadoReproduccion()
 {
 	if (m_view->iconList->activePageIndex())
-		m_view->parejasP->estadoReproduccion();
+		m_view->parejasP->tablaHijos->estadoReproduccion();
 	else
 		m_view->listadosP->tablaListados->estadoReproduccion();
 }

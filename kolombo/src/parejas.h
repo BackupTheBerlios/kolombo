@@ -40,11 +40,6 @@ public slots:
 	void nuevoHijo();
 	void updateSeleccion ();
 	void showEvent( QShowEvent *e );
-	void cambioSexo();
-	void estadoDesaparecida ();
-	void estadoVuelo ();
-	void estadoReproduccion ();
-	void eliminarPaloma ();
 	void contentsContextMenuEvent( QContextMenuEvent *e );
 	void contexTablaHijos (int row, int col, const QPoint & pos);
 	void contexTablaParejas (int row, int col, const QPoint & pos);

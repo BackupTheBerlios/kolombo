@@ -11,7 +11,6 @@
 #ifndef BUSCAR_H
 #define BUSCAR_H
 
-#include "buscarDlg.h"
 #include "qstring.h"
 
 #include <kdialogbase.h>

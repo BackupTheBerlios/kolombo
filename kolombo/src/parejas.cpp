@@ -111,7 +111,7 @@ parejas::~parejas()
 void parejas::parejaChange() {
 	int numHembras = 0, numMachos = 0;
 
-	if (tablaParejas->currentSelection () != -1)
+	if (tablaParejas->currentRecord())
 	{
 		botonNuevoHijo->setEnabled(true);
 		botonBorrarPareja->setEnabled(true);
@@ -209,7 +209,7 @@ void parejas::parejaChange() {
 			HDes->setText("    Desaparecidas: " + query9.value(0).toString());
 			numHembras += query9.value(0).toInt();
 		}
-		hijos->setText(" <b>NÃºmero de hijos de la pareja: " + QString::number(numHembras + numMachos) + "</b>");
+		hijos->setText(" <b>Número de hijos de la pareja: " + QString::number(numHembras + numMachos) + "</b>");
 		Hembras->setText("Hembras:" + QString::number(numHembras));
 		Machos->setText("Machos:" + QString::number(numMachos));
 		tablaHijos->refresh();
@@ -229,7 +229,7 @@ void parejas::parejaChange() {
 		MDes->setText("    Desaparecidos: ");
 		MVue->setText("    En vuelo: ");
 		Machos->setText("Machos:");
-		hijos->setText(" <b>NÃºmero de hijos de la pareja: </b>");
+		hijos->setText(" <b>Número de hijos de la pareja: </b>");
 	}
 }
 
@@ -367,7 +367,7 @@ void parejas::nuevoHijo () {
 
 
 void parejas::updateSeleccion () {
-	if ((tablaHijos->numRows() > 0) and (tablaHijos->currentSelection () != -1))
+	if (tablaHijos->currentRecord())
 		config().anillaSeleccion = tablaHijos->currentRecord()->value(indicePalomaID).toInt();
 }
 
@@ -401,27 +401,27 @@ void parejas::setupActions () {
 // 	verTodasAction->plug(verPopup);
 
 	KAction *cambioSexoAction = new KAction(i18n("Cambiar de sexo"), 0,
-					this, SLOT(cambioSexo()),
+					tablaHijos, SLOT(cambioSexo()),
 					this, "cambioSexoAction");
 
 	KAction *estadoDesaparecidaAction = new KAction(i18n("Desaparecida"), 0,
-					this, SLOT(estadoDesaparecida()),
+					tablaHijos, SLOT(estadoDesaparecida()),
 					this, "estadoDesaparecidaAction");
 	estadoDesaparecidaAction->plug(estadoPopup);
 
 	KAction *estadoVueloAction = new KAction(i18n("Vuelo"), 0,
-					this, SLOT(estadoVuelo()),
+					tablaHijos, SLOT(estadoVuelo()),
 					this, "estadoVueloAction");
 	estadoVueloAction->plug(estadoPopup);
 
 	KAction *estadoReproduccionAction = new KAction(i18n("Reproduccion"), 0,
-					this, SLOT(estadoReproduccion()),
+					tablaHijos, SLOT(estadoReproduccion()),
 					this, "estadoReproduccionAction");
 	estadoReproduccionAction->plug(estadoPopup);
 
 
 	KAction *eliminarPalomaAction = new KAction(i18n("Eliminar paloma"), "button_cancel", CTRL+Key_D,
-					this, SLOT(eliminarPaloma()),
+					tablaHijos, SLOT(eliminarPaloma()),
 					this, "eliminarPalomaAction");
 
 //	popup->setTitle (i18n("Menu tabla"));
@@ -451,77 +451,6 @@ void parejas::setupActions () {
 	eliminarParejaAction->plug(popupParejas);
 	popupParejas->insertSeparator();
 	nuevoHijoAction->plug (popupParejas);
-
-}
-
-
-void parejas::cambioSexo () {
-	QString sexo;
-	QString consulta;
-
-	/* Comprobamos que se pueda cambiar de sexo ... */
-	consulta = "Select count(palomaID) from paloma where madreID =  " + tablaHijos->currentRecord()->value(0).toString() + " OR \
-		padreID = " + tablaHijos->currentRecord()->value(0).toString();
-	QSqlQuery querySexo (consulta, QSqlDatabase::database("palomar" ));
-	querySexo.next();
-	if ( querySexo.value(0).toInt() != 0) {
-		KMessageBox::error (this, i18n("No se puede cambiar el sexo\nEsta paloma es padre o madre de otra existente en la base de datos. "),
-			i18n ("Cambio de sexo."));
-		return;
-	}
-
-	if (tablaHijos->currentRecord()->value(4).toString() == "Macho")
-		sexo = "1";
-	else
-		sexo = "0";
-
-	consulta = "UPDATE paloma SET sexo = " + sexo + " WHERE palomaID = " + tablaHijos->currentRecord()->value(0).toString();
-	//qWarning (consulta);
-	QSqlQuery queryUpdate (consulta, QSqlDatabase::database("palomar" ));
-	QSqlError error = queryUpdate.lastError();
-	if (error.type() != QSqlError::None)
-			KMessageBox::error (this, i18n("Error actualizando la paloma. El error devuelto por la base de datos es:\n") +
-				error.databaseText(),
-				i18n ("Error añadiendo actualizando paloma"));
-
-
-	tablaHijos->refresh();
-}
-
-
-void parejas::estadoReproduccion () {
-
-	QString consulta = "UPDATE paloma SET estado = \"R\" WHERE palomaID = " + tablaHijos->currentRecord()->value(0).toString();
-	//qWarning (consulta);
-	QSqlQuery queryUpdate (consulta, QSqlDatabase::database("palomar" ));
-	tablaHijos->refresh();
-}
-
-void parejas::estadoVuelo () {
-
-	QString consulta = "UPDATE paloma SET estado = \"V\" WHERE palomaID = " + tablaHijos->currentRecord()->value(0).toString();
-	//qWarning (consulta);
-	QSqlQuery queryUpdate (consulta, QSqlDatabase::database("palomar" ));
-	tablaHijos->refresh();
-}
-
-void parejas::estadoDesaparecida () {
-
-	QString consulta = "UPDATE paloma SET estado = \"D\" WHERE palomaID = " + tablaHijos->currentRecord()->value(0).toString();
-	//qWarning (consulta);
-	QSqlQuery queryUpdate (consulta, QSqlDatabase::database("palomar" ));
-	tablaHijos->refresh();
-}
-
-void parejas::eliminarPaloma () {
-	QString consulta = "DELETE FROM paloma WHERE palomaID = " + tablaHijos->currentRecord()->value(0).toString();
-	QSqlQuery queryDelete (consulta, QSqlDatabase::database("palomar" ));
-	QSqlError error = queryDelete.lastError();
-	if (error.type() != QSqlError::None)
-			KMessageBox::error (this, i18n("Error actualizando la paloma. El error devuelto por la base de datos es:\n") +
-				error.databaseText(),
-				i18n ("Error añadiendo actualizando paloma"));
-	tablaHijos->refresh();
 
 }
 
