@@ -1,19 +1,25 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="4" >
-  <Doc0 NumberOfViews="1" URL="file:/home/heaven/cvs/kolombo/src/kbird2.cpp" >
-   <View0 line="0" Type="Source" />
+ <DocsAndViews NumberOfDocuments="6" >
+  <Doc0 NumberOfViews="1" URL="file:/home/heaven/cvs/kolombo/src/kbird2ui.rc" >
+   <View0 Type="Source" />
   </Doc0>
-  <Doc1 NumberOfViews="1" URL="file:/home/heaven/cvs/kolombo/src/pref.cpp" >
-   <View0 line="0" Type="Source" />
+  <Doc1 NumberOfViews="1" URL="file:/home/heaven/cvs/kolombo/src/kbird2.cpp" >
+   <View0 line="251" Type="Source" />
   </Doc1>
-  <Doc2 NumberOfViews="1" URL="file:/home/heaven/cvs/kolombo/src/suelta.cpp" >
-   <View0 line="0" Type="Source" />
+  <Doc2 NumberOfViews="1" URL="file:/home/heaven/cvs/kolombo/src/listados.h" >
+   <View0 Type="Source" />
   </Doc2>
-  <Doc3 NumberOfViews="1" URL="file:/home/heaven/cvs/kolombo/src/suelta.h" >
-   <View0 line="33" Type="Source" />
+  <Doc3 NumberOfViews="1" URL="file:/home/heaven/cvs/kolombo/src/listados.cpp" >
+   <View0 line="512" Type="Source" />
   </Doc3>
+  <Doc4 NumberOfViews="1" URL="file:/home/heaven/cvs/kolombo/src/kbird2view.cpp" >
+   <View0 line="0" Type="Source" />
+  </Doc4>
+  <Doc5 NumberOfViews="1" URL="file:/home/heaven/cvs/kolombo/src/kbird2.h" >
+   <View0 line="58" Type="Source" />
+  </Doc5>
  </DocsAndViews>
  <pluginList>
   <kdevbookmarks>

@@ -13,6 +13,7 @@
 #include "configuration.h"
 #include "generalstats.h"
 #include "palomardatatable.h"
+#include "exportarTaurisDlg.h"
 
 #include <qwidget.h>
 #include <qpopupmenu.h>
@@ -35,6 +36,9 @@
 #include <qwmatrix.h>
 #include <qdatetime.h>
 #include <qpixmap.h>
+#include <qtextedit.h>
+#include <qtextstream.h>
+#include <qregexp.h>
 
 #include <kxmlguifactory.h>
 #include <klocale.h>
@@ -48,6 +52,7 @@
 #include <kmessagebox.h>
 #include <kglobalsettings.h>
 #include <kprinter.h>
+#include <kurlrequester.h>
 
 #include <math.h>
 
@@ -503,4 +508,52 @@ void listados::generalStatsSlot()
 {
 	generalStats dlg;
 	dlg.exec();
+}
+
+/* Exporta los datos del listado al formato que utiliza la versión 1.41 del TaurisClub, sistema de control de palomas.
+El formato es el siguiente:
+------------------------------------------------------------------------------------------
+ <número de palomas\>
+<nacionalidad\>   <año\>    <anilla\><sexo\>1300000000<Color 4 caracteres en mayúsculas\>
+------------------------------------------------------------------------------------------
+
+El formato del final de línea tiene que ser el de dos
+
+*/
+void listados::pigeonsTauris() 
+{
+    exportarTaurisDlg *d = new exportarTaurisDlg(this, "exportarTaurisDlg");
+    d->path->setURL(config().pathTauris);
+    
+    QString consulta (" from listaGeneral");
+    if (!tablaListados->filter().isNull() && !tablaListados->filter().isEmpty())
+        consulta += " where " + tablaListados->filter();
+    QSqlQuery queryCount ("select count (*)" + consulta, QSqlDatabase::database("palomar"));
+    if (queryCount.isActive()) {
+        queryCount.next();
+        d->fichero->append(" " + queryCount.value(0).toString());
+    }
+    
+    QSqlQuery queryLista ("select anyo, anilla, nacionalidad, sexo, plumaje" + consulta, QSqlDatabase::database("palomar"));
+    if (queryLista.isActive())
+        while (queryLista.next()) {
+            d->fichero->append(queryLista.value(2).toString().left(1) + "   " \
+                + queryLista.value(0).toString().right(2) + "    " \
+                + queryLista.value(1).toString() + queryLista.value(3).toString().left(1) \
+                + "1300000000" + queryLista.value(4).toString().left(4).upper());
+        }
+
+    d->fichero->setReadOnly(true);
+
+    if (d->exec() == QDialog::Accepted) {
+        QFile file( d->path->url() );
+        if ( file.open( IO_WriteOnly ) ) {
+            config().pathTauris =  d->path->url();
+            config().write();
+            QTextStream stream( &file );
+            stream << d->fichero->text().replace( QRegExp("\n"), "\r\n" );
+            d->fichero->setModified( FALSE );
+        }
+    }
+
 }

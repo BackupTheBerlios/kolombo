@@ -15,6 +15,7 @@
 				<Action name="updAction"/>
 				<Action name="bkpAction"/>
 			</Menu>
+            <Action name="TaurisPigeonFile"/>
 		</Menu>
 		<Menu name="Parejas"><text>Parejas</text>
 			<Action name="eliminarParejaAction"/>

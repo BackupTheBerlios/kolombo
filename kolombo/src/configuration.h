@@ -34,6 +34,7 @@ class configuration
 
 		// Preferencias de los listados
 		int LAnyo, LAnilla, LNacion, LSexo, LMadre, LPadre, LNombre, LOjo, LPlumaje, LEstado;
+        QString pathTauris;
 
 		//Preferencias de las tablas de las parejas
 		int PNombre, PMadre, PPadre, PNota;

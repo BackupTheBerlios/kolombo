@@ -15,16 +15,16 @@ kbird2_LDADD   = $(LIB_KFILE) $(LIB_KDEPRINT)
 
 # which sources should be compiled for kbird2
 kbird2_SOURCES = main.cpp kbird2.cpp kbird2view.cpp kbird2iface.skel listados.h \
-	listados.cpp listadosWdg.ui pageonewdg.ui configuration.h configuration.cpp \
-	ojoWdg.ui gestionparametros.h gestionparametros.cpp ojo.h ojo.cpp plumaje.h \
-	plumaje.cpp plumajeWdg.ui nacionWdg.ui nacion.h nacion.cpp tiposueltaWdg.ui \
-	tiposuelta.h tiposuelta.cpp parejasWdg.ui parejas.h parejas.cpp nuevaparejaWdg.ui \
-	nuevoHijoDlg.ui datosPalomaWdg.ui datospaloma.h datospaloma.cpp arbolGenWdg.ui \
-	arbolgen.h arbolgen.cpp buscarDlg.ui buscar.cpp parejasStatsDlg.ui \
-	parejasstats.cpp basechart.cpp generalstats.cpp sueltasWdg.ui suelta.cpp pagetwowdg.ui \
-	kbird2config.kcfgc updatePrefWdg.ui pref.cpp updatedlg.ui updateDetailsDlg.ui \
-	concursosWdg.ui concursos.cpp nuevoConcursoDlg.ui nuevoconcurso.cpp comprobarDlg.ui \
-	comprobar.cpp palomardatatable.cpp palomardatatable.h
+		listados.cpp listadosWdg.ui pageonewdg.ui configuration.h configuration.cpp \
+		ojoWdg.ui gestionparametros.h gestionparametros.cpp ojo.h ojo.cpp plumaje.h \
+		plumaje.cpp plumajeWdg.ui nacionWdg.ui nacion.h nacion.cpp tiposueltaWdg.ui \
+		tiposuelta.h tiposuelta.cpp parejasWdg.ui parejas.h parejas.cpp nuevaparejaWdg.ui \
+		nuevoHijoDlg.ui datosPalomaWdg.ui datospaloma.h datospaloma.cpp arbolGenWdg.ui \
+		arbolgen.h arbolgen.cpp buscarDlg.ui buscar.cpp parejasStatsDlg.ui \
+		parejasstats.cpp basechart.cpp generalstats.cpp sueltasWdg.ui suelta.cpp pagetwowdg.ui \
+		kbird2config.kcfgc updatePrefWdg.ui pref.cpp updatedlg.ui updateDetailsDlg.ui \
+		concursosWdg.ui concursos.cpp nuevoConcursoDlg.ui nuevoconcurso.cpp comprobarDlg.ui \
+		comprobar.cpp palomardatatable.cpp palomardatatable.h exportarTaurisDlg.ui
 
 # Añadido por mi para adaptar la aplicación a KConfigXT
 kde_kcfg_DATA = kbird2.kcfg

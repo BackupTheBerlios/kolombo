@@ -52,6 +52,7 @@ public slots:
 	void updateSeleccion ();
 	void contentsContextMenuEvent( QContextMenuEvent * );
 	void generalStatsSlot();
+    void pigeonsTauris();
 };
 
 #endif

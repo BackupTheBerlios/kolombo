@@ -14,6 +14,7 @@
 #include "updateDetailsDlg.h"
 #include "palomardatatable.h"
 
+
 #include <qdragobject.h>
 #include <qpainter.h>
 #include <qpaintdevicemetrics.h>
@@ -248,6 +249,11 @@ void kbird2::setupActions()
 					this, SLOT(backupSlot()),
 					actionCollection(), "bkpAction");
 
+    (void) new KAction(i18n("Exportar palomas para TaurisClub"), "log",
+                    CTRL+SHIFT+Key_P,
+                    m_view->listadosP, SLOT(pigeonsTauris()),
+                    actionCollection(), "TaurisPigeonFile");
+
 	(void) new KAction(i18n("Eliminar paloma"), "button_cancel",
 					CTRL+Key_D,
 					this, SLOT(eliminarPaloma()),
@@ -291,7 +297,7 @@ void kbird2::setupActions()
 					CTRL+SHIFT+Key_S,
 					m_view->parejasP, SLOT(estadisticas()),
 					actionCollection(), "parejasStatsAction");
-					
+    
 
 	createGUI("/home/heaven/cvs/kbird2/src/kbird2ui.rc");
 
