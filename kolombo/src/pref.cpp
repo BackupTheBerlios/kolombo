@@ -20,6 +20,7 @@
 #include <qsqlrecord.h>
 #include <qsqlquery.h>
 #include <qvaluelist.h>
+#include <qvalidator.h>
 
 
 kbird2Preferences::kbird2Preferences()
@@ -46,6 +47,10 @@ kbird2Preferences::kbird2Preferences()
 	frame = addPage(i18n("Personal"), i18n("Datos personales"));
 	pageTwoLayout = new QHBoxLayout( frame, 0, 0);
 	m_pageTwo = new kbird2PrefPageTwo(frame);
+	QValidator* validatorCoord = new QIntValidator( 0, 999999999, this );
+	m_pageTwo->pageWdg->coordx->setValidator(validatorCoord);
+	m_pageTwo->pageWdg->coordy->setValidator(validatorCoord);
+
 	pageTwoLayout->addWidget(m_pageTwo);
 
 	frame = addPage(i18n("Mantenimiento"), i18n("Actualizaciones y copias de seguridad"));

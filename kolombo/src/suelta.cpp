@@ -20,6 +20,7 @@
 #include <qtextedit.h>
 #include <qcombobox.h>
 #include <qlabel.h>
+#include <qvalidator.h>
 
 #include <kpushbutton.h>
 #include <kpopupmenu.h>
@@ -31,6 +32,9 @@ suelta::suelta(QWidget* parent, const char* name, WFlags fl)
 : sueltasWdg(parent,name,fl)
 {
 	loadCombo();
+	QValidator* validatorCoord = new QIntValidator( 0, 999999999, this );
+        coordx->setValidator(validatorCoord);
+        coordy->setValidator(validatorCoord);
 	modificando = FALSE;
 	popup = new KPopupMenu (tablaSuelta, "popup");
 	popup->setTitle (i18n("Menu tabla sueltas"));
