@@ -42,6 +42,12 @@
                             <verstretch>0</verstretch>
                         </sizepolicy>
                     </property>
+                    <property name="frameShape">
+                        <enum>GroupBoxPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                        <enum>Sunken</enum>
+                    </property>
                     <property name="title">
                         <string>Seleccione el concurso</string>
                     </property>
@@ -145,43 +151,13 @@
                     <property name="name">
                         <cstring>unnamed</cstring>
                     </property>
-                    <widget class="QLayoutWidget">
+                    <widget class="QLineEdit">
                         <property name="name">
-                            <cstring>layout6</cstring>
+                            <cstring>filtro</cstring>
                         </property>
-                        <hbox>
-                            <property name="name">
-                                <cstring>unnamed</cstring>
-                            </property>
-                            <spacer>
-                                <property name="name">
-                                    <cstring>spacer3</cstring>
-                                </property>
-                                <property name="orientation">
-                                    <enum>Horizontal</enum>
-                                </property>
-                                <property name="sizeType">
-                                    <enum>Expanding</enum>
-                                </property>
-                                <property name="sizeHint">
-                                    <size>
-                                        <width>40</width>
-                                        <height>20</height>
-                                    </size>
-                                </property>
-                            </spacer>
-                            <widget class="QPushButton">
-                                <property name="name">
-                                    <cstring>botonCesta</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>Añadir a la cesta</string>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>Añade la paloma seleccionada a la cesta</string>
-                                </property>
-                            </widget>
-                        </hbox>
+                        <property name="toolTip" stdset="0">
+                            <string>Filtro</string>
+                        </property>
                     </widget>
                     <widget class="QDataTable">
                         <column>
@@ -237,6 +213,44 @@
                         <property name="toolTip" stdset="0">
                             <string>Haciendo doble click sobre una fila se añadirá la paloma seleccionada a la cesta</string>
                         </property>
+                    </widget>
+                    <widget class="QLayoutWidget">
+                        <property name="name">
+                            <cstring>layout6</cstring>
+                        </property>
+                        <hbox>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <spacer>
+                                <property name="name">
+                                    <cstring>spacer3</cstring>
+                                </property>
+                                <property name="orientation">
+                                    <enum>Horizontal</enum>
+                                </property>
+                                <property name="sizeType">
+                                    <enum>Expanding</enum>
+                                </property>
+                                <property name="sizeHint">
+                                    <size>
+                                        <width>40</width>
+                                        <height>20</height>
+                                    </size>
+                                </property>
+                            </spacer>
+                            <widget class="QPushButton">
+                                <property name="name">
+                                    <cstring>botonCesta</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Añadir a la cesta</string>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>Añade la paloma seleccionada a la cesta</string>
+                                </property>
+                            </widget>
+                        </hbox>
                     </widget>
                 </vbox>
             </widget>
@@ -500,6 +514,12 @@
         <receiver>concursosWdg</receiver>
         <slot>comprobarSlot()</slot>
     </connection>
+    <connection>
+        <sender>filtro</sender>
+        <signal>textChanged(const QString&amp;)</signal>
+        <receiver>concursosWdg</receiver>
+        <slot>filtroInteligente(const QString&amp;)</slot>
+    </connection>
 </connections>
 <slots>
     <slot>nuevaSuelta()</slot>
@@ -513,6 +533,7 @@
     <slot>desaparecer()</slot>
     <slot>setFueraConcurso()</slot>
     <slot>encestar()</slot>
+    <slot>filtroInteligente(const QString&amp;)</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

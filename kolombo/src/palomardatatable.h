@@ -73,6 +73,7 @@ public slots:
     void estadoVuelo ();
     void estadoReproduccion ();
     void eliminarPaloma ();
+    void filtroInteligente (const QString &filtro);
 
 
 

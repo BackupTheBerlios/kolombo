@@ -39,6 +39,7 @@ public slots:
 	virtual void comprobarSlot ();
 	virtual void desaparecer ();
 	virtual void encestar ();
+    virtual void filtroInteligente(const QString&);
 
 protected:
   /*$PROTECTED_FUNCTIONS$*/

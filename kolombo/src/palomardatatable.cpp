@@ -254,6 +254,15 @@ void palomarDataTable::verBusqueda(const QString condicion) {
    refresh();
 }
 
+void palomarDataTable::filtroInteligente (const QString &filtro) {
+   QString condicion;
+   condicion = "anyo like '%%s%' or anilla like '%%s%' or nacionalidad like '%%s%' or sexo like '%%s%' ";
+   condicion += "or plumaje like '%%s%' or ojo like '%%s%' or estado like '%%s%' or nombre like '%%s%' ";
+   condicion += "or padre like '%%s%' or madre like '%%s%'";
+   condicion.replace ("%s", filtro);
+   setFilter (condicion);
+   refresh();
+}
 
 void palomarDataTable::crearPareja() {
 
@@ -365,5 +374,6 @@ void palomarDataTable::eliminarPaloma () {
     refresh();
 
 }
+
 
 #include "palomardatatable.moc"

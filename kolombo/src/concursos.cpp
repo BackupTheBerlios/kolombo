@@ -234,4 +234,16 @@ void concursos::desaparecer() {
 	}
 }
 
+void concursos::filtroInteligente(const QString &filtro)
+{
+   QString condicion;
+   condicion = "estado != \"Desaparecida\" and (anyo like '%%s%' or anilla like '%%s%'";
+   condicion += " or nacionalidad like '%%s%' or sexo like '%%s%' or nombre like '%%s%' ";
+   condicion += "or anyo || \"-\" || anilla || \"-\" || nacionalidad like '%%s%')";
+   condicion.replace ("%s", filtro);
+   listaGeneral->setFilter (condicion);
+   listaGeneral->refresh();
+}
+
+
 #include "concursos.moc"
