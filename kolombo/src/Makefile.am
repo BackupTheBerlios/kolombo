@@ -20,11 +20,12 @@ kbird2_SOURCES = main.cpp kbird2.cpp kbird2view.cpp kbird2iface.skel listados.h 
 	plumaje.cpp plumajeWdg.ui nacionWdg.ui nacion.h nacion.cpp tiposueltaWdg.ui \
 	tiposuelta.h tiposuelta.cpp parejasWdg.ui parejas.h parejas.cpp nuevaparejaWdg.ui \
 	nuevoHijoDlg.ui datosPalomaWdg.ui datospaloma.h datospaloma.cpp arbolGenWdg.ui \
-	arbolgen.h arbolgen.cpp buscarDlg.ui buscar.cpp parejasStatsDlg.ui \
-	parejasstats.cpp basechart.cpp generalstats.cpp sueltasWdg.ui suelta.cpp pagetwowdg.ui \
+	arbolgen.h arbolgen.cpp buscar.cpp parejasStatsDlg.ui parejasstats.cpp \
+	basechart.cpp generalstats.cpp sueltasWdg.ui suelta.cpp pagetwowdg.ui \
 	kbird2config.kcfgc updatePrefWdg.ui pref.cpp updatedlg.ui updateDetailsDlg.ui \
 	concursosWdg.ui concursos.cpp nuevoConcursoDlg.ui nuevoconcurso.cpp comprobarDlg.ui \
-	comprobar.cpp palomardatatable.cpp palomardatatable.h exportarTaurisWdg.ui
+	comprobar.cpp palomardatatable.cpp palomardatatable.h exportarTaurisWdg.ui \
+	buscarWdg.ui
 
 # Añadido por mi para adaptar la aplicación a KConfigXT
 kde_kcfg_DATA = kbird2.kcfg

@@ -10,6 +10,7 @@
 
 
 #include "buscar.h"
+#include "buscarWdg.h"
 
 #include <qsqldatabase.h>
 #include <qsqlrecord.h>
@@ -20,14 +21,16 @@
 #include <qstring.h>
 
 buscar::buscar(QWidget* parent, const char* name, bool modal, WFlags fl)
-: buscarDlg(parent,name, modal,fl)
+: KDialogBase ( KDialogBase::Swallow, 0L,parent, "exportarTauris", true, "Buscar", KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, true )
 {
-	QString consulta = "select distinct anyo from paloma where anyo != 0 order by anyo;";
+    wdg = new buscarWdg (this, "buscarWdg");
+    setMainWidget (wdg);
+	QString consulta = "select distinct anyo from paloma where anyo != 0 order by anyo desc;";
 	QSqlQuery queryAnyos (consulta, QSqlDatabase::database("palomar" ));
 	if (queryAnyos.isActive()) {
 		while( queryAnyos.next() )
-		anyo->insertItem (queryAnyos.value(0).toString());
-	}	
+		wdg->anyo->insertItem (queryAnyos.value(0).toString());
+	}
 }
 
 buscar::~buscar()
@@ -38,37 +41,38 @@ void buscar::accept()
 {
 	bool previo = false;
 	
-	if (!this->numAnilla->text().isEmpty())
+	if (!wdg->numAnilla->text().isEmpty())
 	{
-		consulta += " (anilla = " + this->numAnilla->text () + ")";
+		consulta += " (anilla = " + wdg->numAnilla->text () + ")";
 		previo = true;
 	}
 	
-	if (!(this->anyo->currentText() == "Cualquiera"))
+	if (!(wdg->anyo->currentText() == "Cualquiera"))
 	{
 		if (previo)
 			consulta += " AND";
-		consulta += " (anyo = " + this->anyo->currentText() + ")";
+		consulta += " (anyo = " + wdg->anyo->currentText() + ")";
 		previo = true;
 	}
 	
-	if (!(this->sexo->currentText() == "Cualquiera"))
+	if (!(wdg->sexo->currentText() == "Cualquiera"))
 	{
 		if (previo)
 			consulta += " AND";
-		if (this->sexo->currentText() == "Hembra")
-			consulta += " (sexo = 1)";
+		if (wdg->sexo->currentText() == "Hembra")
+			consulta += " (palomaID in (SELECT palomaID from paloma WHERE sexo = 1))";
 		else
-			consulta += " (sexo = 0)";
+			consulta += " (palomaID in (SELECT palomaID from paloma WHERE sexo = 0))";
 		previo = true;
 	}
 	
-	if (!(this->estado->currentText() == "Cualquiera"))
+	if (!(wdg->estado->currentText() == "Cualquiera"))
 	{
 		if (previo)
 			consulta += " AND";
-		consulta += " (estado = \"" + this->estado->currentText()[0] + "\")";
+		consulta += " (palomaID in (SELECT palomaID from paloma WHERE  estado = \"" + wdg->estado->currentText()[0] + "\"))";
 	}
+    qWarning (consulta);
 	QDialog::accept();
 	
 }

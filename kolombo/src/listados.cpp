@@ -549,6 +549,7 @@ void listados::pigeonsTauris()
                 + queryLista.value(1).toString() + queryLista.value(3).toString().left(1) \
                 + "1300000000" + queryLista.value(4).toString().left(4).upper());
         }
+
     d->fichero->scrollToAnchor("top");
     d->fichero->setReadOnly(true);
 

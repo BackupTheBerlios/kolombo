@@ -14,7 +14,11 @@
 #include "buscarDlg.h"
 #include "qstring.h"
 
-class buscar : public buscarDlg
+#include <kdialogbase.h>
+
+class buscarWdg;
+
+class buscar : public KDialogBase
 {
   Q_OBJECT
 
@@ -30,6 +34,7 @@ public slots:
   void accept ();
 
 protected:
+    buscarWdg *wdg;
   /*$PROTECTED_FUNCTIONS$*/
 
 protected slots:
