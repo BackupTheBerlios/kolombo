@@ -29,11 +29,13 @@
 #include <qrect.h>
 #include <qcolor.h>
 #include <qstring.h>
+#include <qtimer.h>
 
 #include <qdrawutil.h>
 
 palomarDataTable::palomarDataTable( QWidget * parent, const char * name)
  : QDataTable(parent, name)
+ , timerFiltro(new QTimer(this))
 {
     // Cacho de puthon para generar los colorcitos ...
     //for i in range (0, 40):
@@ -98,7 +100,7 @@ palomarDataTable::palomarDataTable( QWidget * parent, const char * name)
     this->setSort( dataTable1_stringlist );
     
     palomarConnection = QSqlDatabase::database( "palomar" );
-
+    connect( timerFiltro, SIGNAL( timeout() ), SLOT( filtroInteligenteTimeout () ) );
 }
 
 
@@ -255,10 +257,16 @@ void palomarDataTable::verBusqueda(const QString condicion) {
 }
 
 void palomarDataTable::filtroInteligente (const QString &filtro) {
+    this->filtro = filtro;
+    timerFiltro->start( 280, true );
+}
+
+void palomarDataTable::filtroInteligenteTimeout () {
+   timerFiltro->stop();
    QString condicion;
    condicion = "anyo like '%%s%' or anilla like '%%s%' or nacionalidad like '%%s%' or sexo like '%%s%' ";
    condicion += "or plumaje like '%%s%' or ojo like '%%s%' or estado like '%%s%' or nombre like '%%s%' ";
-   condicion += "or padre like '%%s%' or madre like '%%s%'";
+   condicion += "or padre like '%%s%' or madre like '%%s%'or anyo || \"-\" || anilla || \"-\" || nacionalidad like '%%s%'";
    condicion.replace ("%s", filtro);
    setFilter (condicion);
    refresh();

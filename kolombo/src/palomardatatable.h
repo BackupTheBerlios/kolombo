@@ -33,6 +33,7 @@ class QPatinter;
 class QSqlField;
 class QRect;
 class QColor;
+class QTimer;
 
 /**
 Esta clase extiende QDataTable para hacer que las celdas de puedan colorear en función de determinados parámetros y para añadir widgets personalizados para la edición.
@@ -54,6 +55,8 @@ public:
 private:
     typedef QValueList<QColor> ColorList;
     ColorList coloresAnyos;
+    QTimer *timerFiltro;
+    QString filtro;
     
 public slots:
     virtual void polish();
@@ -73,6 +76,7 @@ public slots:
     void estadoVuelo ();
     void estadoReproduccion ();
     void eliminarPaloma ();
+    void filtroInteligenteTimeout ();
     void filtroInteligente (const QString &filtro);
 
 
