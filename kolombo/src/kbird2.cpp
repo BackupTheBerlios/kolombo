@@ -235,7 +235,7 @@ void kbird2::setupActions()
 	(void) new KAction(i18n("Buscar paloma"), "find", CTRL+Key_B,
 					this, SLOT(buscarPalomaSlot()),
 					actionCollection(), "buscarAction");
-	(void) new KAction(i18n("Estadísticas generales"), "log",
+	(void) new KAction(i18n("EstadÃsticas generales"), "log",
 					CTRL+SHIFT+Key_G,
 					m_view->listadosP, SLOT(generalStatsSlot()),
 					actionCollection(), "generalStatsAction");
@@ -293,7 +293,7 @@ void kbird2::setupActions()
 					CTRL+SHIFT+Key_V,
 					m_view->parejasP, SLOT(nuevoHijo()),
 					actionCollection(), "nuevoHijoAction");
-	(void) new KAction(i18n("Estadísticas"), "log",
+	(void) new KAction(i18n("EstadÃsticas"), "log",
 					CTRL+SHIFT+Key_S,
 					m_view->parejasP, SLOT(estadisticas()),
 					actionCollection(), "parejasStatsAction");
@@ -541,7 +541,7 @@ void kbird2::connectDataBase () {
 		if ( ! defaultDB->open() ) {
 			KMessageBox::error (this, i18n("Fallo al abrir la base de datos: ")
 				+ defaultDB->lastError().driverText(),
-				i18n ("Conexión a la base de datos"));
+				i18n ("ConexiÃ³n a la base de datos"));
 				qWarning( defaultDB->lastError().databaseText() );
 		}
 	} else

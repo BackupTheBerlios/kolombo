@@ -13,7 +13,7 @@
 #include "configuration.h"
 #include "generalstats.h"
 #include "palomardatatable.h"
-#include "exportarTaurisDlg.h"
+#include "exportarTaurisWdg.h"
 
 #include <qwidget.h>
 #include <qpopupmenu.h>
@@ -53,6 +53,7 @@
 #include <kglobalsettings.h>
 #include <kprinter.h>
 #include <kurlrequester.h>
+#include <kdialogbase.h>
 
 #include <math.h>
 
@@ -522,18 +523,24 @@ El formato del final de línea tiene que ser el de dos
 */
 void listados::pigeonsTauris() 
 {
-    exportarTaurisDlg *d = new exportarTaurisDlg(this, "exportarTaurisDlg");
-    d->path->setURL(config().pathTauris);
+    KDialogBase *k = new KDialogBase ( KDialogBase::Swallow, 0L,this, "exportarTauris", true, "Exportar", KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, true );
     
+    exportarTaurisWdg *d = new exportarTaurisWdg(this, "exportarTaurisWdg");
+    
+    k->setMainWidget (d);
+
+    d->path->setURL(config().pathTauris);
+
     QString consulta (" from listaGeneral");
     if (!tablaListados->filter().isNull() && !tablaListados->filter().isEmpty())
         consulta += " where " + tablaListados->filter();
+    d->fichero->append("<a name=\"top\"\>");
     QSqlQuery queryCount ("select count (*)" + consulta, QSqlDatabase::database("palomar"));
     if (queryCount.isActive()) {
         queryCount.next();
         d->fichero->append(" " + queryCount.value(0).toString());
     }
-    
+
     QSqlQuery queryLista ("select anyo, anilla, nacionalidad, sexo, plumaje" + consulta, QSqlDatabase::database("palomar"));
     if (queryLista.isActive())
         while (queryLista.next()) {
@@ -542,10 +549,10 @@ void listados::pigeonsTauris()
                 + queryLista.value(1).toString() + queryLista.value(3).toString().left(1) \
                 + "1300000000" + queryLista.value(4).toString().left(4).upper());
         }
-
+    d->fichero->scrollToAnchor("top");
     d->fichero->setReadOnly(true);
 
-    if (d->exec() == QDialog::Accepted) {
+    if (k->exec() == QDialog::Accepted) {
         QFile file( d->path->url() );
         if ( file.open( IO_WriteOnly ) ) {
             config().pathTauris =  d->path->url();
@@ -555,5 +562,4 @@ void listados::pigeonsTauris()
             d->fichero->setModified( FALSE );
         }
     }
-
 }

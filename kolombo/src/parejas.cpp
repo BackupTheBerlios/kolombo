@@ -209,7 +209,7 @@ void parejas::parejaChange() {
 			HDes->setText("    Desaparecidas: " + query9.value(0).toString());
 			numHembras += query9.value(0).toInt();
 		}
-		hijos->setText(" <b>Número de hijos de la pareja: " + QString::number(numHembras + numMachos) + "</b>");
+		hijos->setText(" <b>NÃºmero de hijos de la pareja: " + QString::number(numHembras + numMachos) + "</b>");
 		Hembras->setText("Hembras:" + QString::number(numHembras));
 		Machos->setText("Machos:" + QString::number(numMachos));
 		tablaHijos->refresh();
@@ -229,7 +229,7 @@ void parejas::parejaChange() {
 		MDes->setText("    Desaparecidos: ");
 		MVue->setText("    En vuelo: ");
 		Machos->setText("Machos:");
-		hijos->setText(" <b>Número de hijos de la pareja: </b>");
+		hijos->setText(" <b>NÃºmero de hijos de la pareja: </b>");
 	}
 }
 
@@ -529,7 +529,7 @@ void parejas::eliminarPaloma () {
 void parejas::eliminarPareja () {
 	if (KMessageBox::questionYesNo( 
 			this,
-			i18n("¿Está usted seguro que desea eliminar esta pareja?")) == KMessageBox::No)
+			i18n("¿EstÃ¡ usted seguro que desea eliminar esta pareja?")) == KMessageBox::No)
 		return;
 	QString consulta = "DELETE FROM parejas WHERE parejaID = " + tablaParejas->currentRecord()->value(0).toString();
 	QSqlQuery queryDelete (consulta, QSqlDatabase::database("palomar" ));
