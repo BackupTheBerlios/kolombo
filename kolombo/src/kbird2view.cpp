@@ -80,13 +80,13 @@ kbird2View::kbird2View(QWidget *parent)
 	arbolGenLayout = new QHBoxLayout( frame, 0, 0, "gen");
 	arbolGenScrollView = new QScrollView (frame);
 	arbolGenLayout->addWidget(arbolGenScrollView);
-	
+
 	arbolGenScrollViewLayout = new QHBoxLayout(arbolGenScrollView, 0, 0);
 	arbolGenP = new arbolGen (arbolGenScrollView);
 	arbolGenScrollView->addChild (arbolGenP, 0, 0);
 	arbolGenScrollViewLayout->addWidget(arbolGenP);
 
-	
+
 	// Concursos...
 	frame = iconList->addPage (i18n("Concursos"),
 				i18n("Concursos"),
@@ -95,7 +95,7 @@ kbird2View::kbird2View(QWidget *parent)
 	concursosLayout = new QHBoxLayout( frame, 0, 0, "conc");
 	concursosP = new concursos (frame);
 	concursosLayout->addWidget(concursosP);
-	
+
 
 	connect ( iconList, SIGNAL (aboutToShowPage (QWidget *)), this, SLOT(cambiaPagina (QWidget *)));
 /*

@@ -83,9 +83,9 @@ void kbird2Preferences::savePreferences() {
         QString update;
         QValueList<bloqueSuelta> vectorSueltas;
         bloqueSuelta suelta;
-        double a, b, palomarx, palomary;        
-        palomarx = m_pageTwo->pageWdg->coordx->text().toDouble();
-        palomary = m_pageTwo->pageWdg->coordy->text().toDouble();
+        long long int a, b, palomarx, palomary;        
+        palomarx = m_pageTwo->pageWdg->coordx->text().toLong();
+        palomary = m_pageTwo->pageWdg->coordy->text().toLong();
         qWarning ("X:" + QString::number(palomarx));
         qWarning ("Y:" + QString::number(palomary));
         config().coordX = palomarx;
@@ -98,26 +98,23 @@ void kbird2Preferences::savePreferences() {
             while( selecDistancias.next() ) {
                 suelta.sueltaID = selecDistancias.value(0).toDouble();
                 suelta.x = selecDistancias.value(1).toDouble();
-                suelta.x = selecDistancias.value(2).toDouble();
+                suelta.y = selecDistancias.value(2).toDouble();
                 vectorSueltas.append(suelta);
             }
             QValueList<bloqueSuelta>::iterator it;
+            long long int acuadrado, bcuadrado;
             for ( it = vectorSueltas.begin(); it != vectorSueltas.end(); ++it ) {
                 a = (*it).x - palomarx;
                 b = (*it).y - palomary;
-                qWarning ("a:" + QString::number(a));
-                qWarning ("b:" + QString::number(b));
-                queryUpdate.prepare("UPDATE suelta SET distancia = \"" + QString::number(sqrt(((a*a) + (b*b))/1000)) + "\" WHERE sueltaid = " + QString::number((*it).sueltaID) + ";");
+                acuadrado = a * a;
+                bcuadrado = b * b;
+                queryUpdate.prepare("UPDATE suelta SET distancia = \"" + QString::number(sqrt(acuadrado + bcuadrado)/1000) + "\" WHERE sueltaid = " + QString::number((*it).sueltaID) + ";");
                 queryUpdate.exec();
-                if (queryUpdate.isActive())
-                    qWarning (queryUpdate.lastQuery());
-                else
-                    qWarning ("No va bien");
             }
         }
     }
 
-	config().write();
+    config().write();
 }
 
 kbird2PrefPageOne::kbird2PrefPageOne(QWidget *parent)

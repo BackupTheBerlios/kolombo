@@ -18,8 +18,8 @@ class QHBoxLayout;
 
 typedef struct {
     int sueltaID;
-    double x;
-    double y; 
+    long long int x;
+    long long int y; 
 } bloqueSuelta;
 
 class kbird2Preferences : public KDialogBase
