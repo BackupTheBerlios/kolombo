@@ -2,7 +2,7 @@
 <customwidgets>
     <customwidget>
         <class>palomarDataTable</class>
-        <header location="local">/home/heaven/cvs/kolombo/src/palomardatatable.h</header>
+        <header location="local">palomardatatable.h</header>
         <sizehint>
             <width>-1</width>
             <height>-1</height>
