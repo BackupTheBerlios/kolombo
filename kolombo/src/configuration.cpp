@@ -46,7 +46,10 @@ void configuration::read () {
 	provinciaP = conf->readEntry("provinciaP", "");
 	calleP = conf->readEntry("calleP", "");
 	numeroP = conf->readEntry("numeroP", "");
-	
+    coordX = conf->readNumEntry("coordX", 0);
+    coordY = conf->readNumEntry("coordY", 0);
+
+    	
 	// Preferencias de las tablas de los concursos
 	conf->setGroup("Concursos");
 	LDAnyo = conf->readNumEntry ("LDAnyo", 43);
@@ -117,6 +120,8 @@ void configuration::write () {
 	conf->writeEntry ("provinciaP", provinciaP);
 	conf->writeEntry ("calleP", calleP);
 	conf->writeEntry ("numeroP", numeroP);
+    conf->writeEntry ("coordX", coordX);
+    conf->writeEntry ("coordY", coordY);
 	
 	// Preferencias de las tablas de los concursos
 	conf->setGroup ("Concursos");

@@ -16,6 +16,12 @@ class pageTwoWdg;
 class updatePrefWdg;
 class QHBoxLayout;
 
+typedef struct {
+    int sueltaID;
+    double x;
+    double y; 
+} bloqueSuelta;
+
 class kbird2Preferences : public KDialogBase
 {
     Q_OBJECT

@@ -9,6 +9,7 @@
 #include "updatePrefWdg.h"
 
 #include <klocale.h>
+#include <kmessagebox.h>
 
 #include <qlayout.h>
 #include <qlabel.h>
@@ -16,6 +17,10 @@
 #include <qcheckbox.h>
 #include <qsqldatabase.h>
 #include <qcombobox.h>
+#include <qsqlrecord.h>
+#include <qsqlquery.h>
+#include <qvaluelist.h>
+
 
 kbird2Preferences::kbird2Preferences()
     : KDialogBase(TreeList, i18n("kbird2 Preferences"),
@@ -68,7 +73,45 @@ void kbird2Preferences::savePreferences() {
 	config().poblacionP = m_pageTwo->pageWdg->poblacion->text();
 	config().provinciaP = m_pageTwo->pageWdg->provincia->text();
 	config().numeroP = m_pageTwo->pageWdg->numero->text();
-	
+    if ((config().coordX != m_pageTwo->pageWdg->coordx->text().toInt()) || 
+            ((config().coordY != m_pageTwo->pageWdg->coordy->text().toInt()))) {
+        QString update;
+        QValueList<bloqueSuelta> vectorSueltas;
+        bloqueSuelta suelta;
+        double a, b, palomarx, palomary;        
+        palomarx = m_pageTwo->pageWdg->coordx->text().toDouble();
+        palomary = m_pageTwo->pageWdg->coordy->text().toDouble();
+        qWarning ("X:" + QString::number(palomarx));
+        qWarning ("Y:" + QString::number(palomary));
+        config().coordX = palomarx;
+        config().coordY = palomary;
+        /* Hay que actualizar todos los puntos de suelta */
+        /* Update puntosDeSuelta set distancia = sqrt ((puntoSueltaX - palomarX)^2 - (puntoSueltaY - palomarY)^2) */
+        QSqlQuery queryUpdate(QSqlDatabase::database("palomar"));
+        QSqlQuery selecDistancias ("SELECT sueltaid, coordx, coordy FROM suelta;", QSqlDatabase::database("palomar"));
+        if (selecDistancias.isActive()) {
+            while( selecDistancias.next() ) {
+                suelta.sueltaID = selecDistancias.value(0).toDouble();
+                suelta.x = selecDistancias.value(1).toDouble();
+                suelta.x = selecDistancias.value(2).toDouble();
+                vectorSueltas.append(suelta);
+            }
+            QValueList<bloqueSuelta>::iterator it;
+            for ( it = vectorSueltas.begin(); it != vectorSueltas.end(); ++it ) {
+                a = (*it).x - palomarx;
+                b = (*it).y - palomary;
+                qWarning ("a:" + QString::number(a));
+                qWarning ("b:" + QString::number(b));
+                queryUpdate.prepare("UPDATE suelta SET distancia = \"" + QString::number(sqrt(((a*a) + (b*b))/1000)) + "\" WHERE sueltaid = " + QString::number((*it).sueltaID) + ";");
+                queryUpdate.exec();
+                if (queryUpdate.isActive())
+                    qWarning (queryUpdate.lastQuery());
+                else
+                    qWarning ("No va bien");
+            }
+        }
+    }
+
 	config().write();
 }
 
@@ -111,6 +154,8 @@ kbird2PrefPageTwo::kbird2PrefPageTwo(QWidget *parent)
 	pageWdg->numero->setText(config().numeroP);
 	pageWdg->poblacion->setText(config().poblacionP);
 	pageWdg->provincia->setText(config().provinciaP);
+    pageWdg->coordx->setText(QString::number(config().coordX));
+    pageWdg->coordy->setText(QString::number(config().coordY));
 }
 
 kbird2PrefUpdBkp::kbird2PrefUpdBkp(QWidget *parent)

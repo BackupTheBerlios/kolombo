@@ -31,7 +31,7 @@ public slots:
   virtual void          insertSuelta();
 	void eliminarSuelta ();
 	void modificarSuelta ();
-
+    void actualizaDistancia();
 protected:
   /*$PROTECTED_FUNCTIONS$*/
 

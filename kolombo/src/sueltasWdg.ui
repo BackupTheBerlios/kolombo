@@ -63,7 +63,66 @@
                 </widget>
                 <widget class="QLayoutWidget">
                     <property name="name">
-                        <cstring>layout4</cstring>
+                        <cstring>layout7</cstring>
+                    </property>
+                    <hbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QLabel">
+                            <property name="name">
+                                <cstring>textLabel2_3</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Coordenada X:</string>
+                            </property>
+                        </widget>
+                        <widget class="QLineEdit">
+                            <property name="name">
+                                <cstring>coordx</cstring>
+                            </property>
+                            <property name="text">
+                                <string>0</string>
+                            </property>
+                        </widget>
+                        <widget class="QLabel">
+                            <property name="name">
+                                <cstring>textLabel3</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Coordenada Y:</string>
+                            </property>
+                        </widget>
+                        <widget class="QLineEdit">
+                            <property name="name">
+                                <cstring>coordy</cstring>
+                            </property>
+                            <property name="text">
+                                <string>0</string>
+                            </property>
+                        </widget>
+                        <spacer>
+                            <property name="name">
+                                <cstring>spacer4</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Horizontal</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>40</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                        </spacer>
+                    </hbox>
+                </widget>
+                <widget class="QLayoutWidget">
+                    <property name="name">
+                        <cstring>layout8</cstring>
                     </property>
                     <hbox>
                         <property name="name">
@@ -87,7 +146,7 @@
                         </widget>
                         <spacer>
                             <property name="name">
-                                <cstring>spacer3</cstring>
+                                <cstring>spacer5</cstring>
                             </property>
                             <property name="orientation">
                                 <enum>Horizontal</enum>
@@ -102,16 +161,6 @@
                                 </size>
                             </property>
                         </spacer>
-                    </hbox>
-                </widget>
-                <widget class="QLayoutWidget">
-                    <property name="name">
-                        <cstring>layout5</cstring>
-                    </property>
-                    <hbox>
-                        <property name="name">
-                            <cstring>unnamed</cstring>
-                        </property>
                         <widget class="QLabel">
                             <property name="name">
                                 <cstring>textLabel2_2</cstring>
@@ -120,28 +169,14 @@
                                 <string>Distancia (en Km):</string>
                             </property>
                         </widget>
-                        <widget class="QLineEdit">
+                        <widget class="QLabel">
                             <property name="name">
                                 <cstring>distancia</cstring>
                             </property>
+                            <property name="text">
+                                <string>0</string>
+                            </property>
                         </widget>
-                        <spacer>
-                            <property name="name">
-                                <cstring>spacer4</cstring>
-                            </property>
-                            <property name="orientation">
-                                <enum>Horizontal</enum>
-                            </property>
-                            <property name="sizeType">
-                                <enum>Expanding</enum>
-                            </property>
-                            <property name="sizeHint">
-                                <size>
-                                    <width>40</width>
-                                    <height>20</height>
-                                </size>
-                            </property>
-                        </spacer>
                     </hbox>
                 </widget>
                 <widget class="QLabel">
@@ -234,19 +269,13 @@
                         <property name="text">
                             <string>Nombre</string>
                         </property>
-                        <property name="pixmap">
-                            <pixmap></pixmap>
-                        </property>
                         <property name="field">
                             <string>nombre</string>
                         </property>
                     </column>
                     <column>
                         <property name="text">
-                            <string>Tipo de suelta</string>
-                        </property>
-                        <property name="pixmap">
-                            <pixmap></pixmap>
+                            <string>TipoSuelta</string>
                         </property>
                         <property name="field">
                             <string>tipoSuelta</string>
@@ -256,22 +285,32 @@
                         <property name="text">
                             <string>Distancia</string>
                         </property>
-                        <property name="pixmap">
-                            <pixmap></pixmap>
-                        </property>
                         <property name="field">
                             <string>distancia</string>
                         </property>
                     </column>
                     <column>
                         <property name="text">
-                            <string>Descripción</string>
-                        </property>
-                        <property name="pixmap">
-                            <pixmap></pixmap>
+                            <string>Descripcion</string>
                         </property>
                         <property name="field">
                             <string>descripcion</string>
+                        </property>
+                    </column>
+                    <column>
+                        <property name="text">
+                            <string>X</string>
+                        </property>
+                        <property name="field">
+                            <string>X</string>
+                        </property>
+                    </column>
+                    <column>
+                        <property name="text">
+                            <string>Y</string>
+                        </property>
+                        <property name="field">
+                            <string>Y</string>
                         </property>
                     </column>
                     <property name="name">
@@ -282,11 +321,6 @@
                     </property>
                     <property name="sorting">
                         <bool>true</bool>
-                    </property>
-                    <property name="sort">
-                        <stringlist>
-                            <string>[sueltaID] ASC</string>
-                        </stringlist>
                     </property>
                     <property name="database" stdset="0">
                         <stringlist>
@@ -299,6 +333,8 @@
         </widget>
     </vbox>
 </widget>
+<customwidgets>
+</customwidgets>
 <connections>
     <connection>
         <sender>InsertButton</sender>
@@ -313,10 +349,16 @@
         <slot>clear()</slot>
     </connection>
     <connection>
-        <sender>clearButton</sender>
-        <signal>clicked()</signal>
-        <receiver>distancia</receiver>
-        <slot>clear()</slot>
+        <sender>coordx</sender>
+        <signal>textChanged(const QString&amp;)</signal>
+        <receiver>sueltasWdg</receiver>
+        <slot>actualizaDistancia()</slot>
+    </connection>
+    <connection>
+        <sender>coordy</sender>
+        <signal>textChanged(const QString&amp;)</signal>
+        <receiver>sueltasWdg</receiver>
+        <slot>actualizaDistancia()</slot>
     </connection>
     <connection>
         <sender>tablaSuelta</sender>
@@ -328,6 +370,7 @@
 <slots>
     <slot>insertSuelta()</slot>
     <slot>contextSueltas(int row, int col, const QPoint &amp; pos)</slot>
+    <slot>actualizaDistancia()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 <includehints>

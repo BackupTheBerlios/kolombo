@@ -28,6 +28,7 @@ class configuration
 		QString nombreDB, hostDB, passDB, driverDB, userDB;
 		QString nombreP, dniP, clubP, poblacionP, licenciaP, provinciaP, calleP, numeroP;
 		bool connectOnStart;
+        double coordX, coordY;
 		int ultimaAnilla;
 		int anillaSeleccion;
 

@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>pageTwoWdg</class>
 <widget class="QWidget">
     <property name="name">
@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>527</width>
-            <height>396</height>
+            <height>403</height>
         </rect>
     </property>
     <property name="caption">
@@ -218,6 +218,57 @@
                     </hbox>
                 </widget>
             </vbox>
+        </widget>
+        <widget class="QGroupBox">
+            <property name="name">
+                <cstring>groupBox3</cstring>
+            </property>
+            <property name="title">
+                <string>Coordenadas del palomar</string>
+            </property>
+            <hbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel1_2</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Coordenada X:</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>coordx</cstring>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Introduzca la coordenada X de su palomar</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>Coordenada X para el cálculo de distancias hasta los puntos de suelta</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel2_2</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Coordenada Y:</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>coordy</cstring>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Introduzca la coordenada Y de su palomar</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>Coordenada Y para el cálculo de distancias hasta los puntos de suelta</string>
+                    </property>
+                </widget>
+            </hbox>
         </widget>
         <spacer>
             <property name="name">

@@ -10,6 +10,7 @@
 
 
 #include "suelta.h"
+#include "configuration.h"
 
 #include <qdatatable.h>
 #include <qcursor.h>
@@ -18,6 +19,7 @@
 #include <qlineedit.h>
 #include <qtextedit.h>
 #include <qcombobox.h>
+#include <qlabel.h>
 
 #include <kpushbutton.h>
 #include <kpopupmenu.h>
@@ -54,13 +56,20 @@ void suelta::contextSueltas(int row, int col, const QPoint & pos)
 void suelta::insertSuelta()
 {
 	if (!nombre->text().isEmpty()
-			&& !distancia->text().isEmpty()
+			&& !coordx->text().isEmpty()
+            && !coordy->text().isEmpty()
 			&& !descripcionSuelta->text().isEmpty())
 	{
+        double a, b;
+        a = coordx->text().toDouble() - config().coordX;
+        b = coordy->text().toDouble() - config().coordY;
 		if (modificando) 
 		{
 			QString consulta = "UPDATE suelta SET nombre = \"" + nombre->text() + "\", \
 			descripcion = \"" + descripcionSuelta->text() + "\", \
+            distancia = \"" + QString::number(sqrt(((a*a) + (b*b))/1000)) + "\", \
+            coordx = " + coordx->text() + ", \
+            coordy = " + coordy->text() + ", \
 			tipoSueltaID = (SELECT tipoSueltaID FROM tipoSuelta \
 			WHERE nombre = \"" + tipoSueltaCombo->currentText() + "\" )\
 			WHERE sueltaID = " + tablaSuelta->currentRecord()->value(0).toString();
@@ -78,17 +87,19 @@ void suelta::insertSuelta()
 				modificando = FALSE;
 				descripcionSuelta->clear();
 				nombre->clear();
-				distancia->clear();
+				distancia->setText(QString::number(0));
+                coordx->setText("0");
+                coordy->setText("0");
 			}
 		}
 		else
 		{
-			QString consulta = "INSERT INTO suelta (nombre,descripcion,distancia,tipoSueltaID)";
+			QString consulta = "INSERT INTO suelta (nombre,descripcion,distancia,tipoSueltaID,coordx,coordy)";
 			consulta += " VALUES ('";
 			consulta += nombre->text() + "', '" + descripcionSuelta->text() + "', '";
-			consulta += distancia->text() + "',";
+			consulta += QString::number(sqrt(((a*a) + (b*b))/1000)) + "',";
 			consulta += "(SELECT tipoSueltaID from tipoSuelta WHERE ";
-			consulta += "nombre = '"+tipoSueltaCombo->currentText()+"'));";
+			consulta += "nombre = '"+tipoSueltaCombo->currentText()+"'), " + coordx->text() + ", " + coordy->text() + " );";
 			qWarning (consulta);
 			QSqlQuery queryInsert (consulta, QSqlDatabase::database("palomar" ));
 			QSqlError error = queryInsert.lastError();
@@ -101,12 +112,14 @@ void suelta::insertSuelta()
 				tablaSuelta->refresh();
 				descripcionSuelta->clear();
 				nombre->clear();
-				distancia->clear();
+				distancia->setText(QString::number(0));
+                coordx->setText("0");
+                coordy->setText("0");
 			}
 		}
 	}
 	else
-		KMessageBox::error (this, i18n("Debe rellenar el nombre, la descripción y la distancia."),
+		KMessageBox::error (this, i18n("Debe rellenar el nombre, la descripción, la distancia y las coordenadas del punto de suelta."),
 												i18n ("Error añadiendo suelta"));
 }
 
@@ -131,6 +144,8 @@ void suelta::modificarSuelta()
 	InsertButton->setText(i18n("Modificar"));
 	distancia->setText(tablaSuelta->currentRecord()->value(3).toString());
 	tipoSueltaCombo->setCurrentText (tablaSuelta->currentRecord()->value(2).toString());
+    coordx->setText(tablaSuelta->currentRecord()->value(5).toString());
+    coordy->setText(tablaSuelta->currentRecord()->value(6).toString());
 	modificando = TRUE;
 }
 
@@ -148,5 +163,13 @@ void suelta::showEvent( QShowEvent *e )
 {
 	loadCombo();
 }
-#include "suelta.moc"
 
+void suelta::actualizaDistancia()
+{
+    double a, b;
+    a = coordx->text().toDouble() - config().coordX;
+    b = coordy->text().toDouble() - config().coordY;
+    distancia->setText(QString::number(sqrt(((a*a) + (b*b))/1000)));
+}
+
+#include "suelta.moc"

@@ -24,9 +24,6 @@
 #include <qdatetimeedit.h> 
 #include <qcursor.h>
 #include <qdatatable.h>
-#include <qsqldatabase.h>
-#include <qsqlrecord.h>
-#include <qsqlquery.h>
 #include <qvariant.h>
 #include <qsplitter.h>
 
