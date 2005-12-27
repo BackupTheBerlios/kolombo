@@ -42,6 +42,50 @@ INSERT INTO ojo VALUES(11,'Bandera','Amarillo y rojo');
 INSERT INTO ojo VALUES(12,'Marron','Marron');
 INSERT INTO ojo VALUES(13,'gris','grisaceo');
 INSERT INTO ojo VALUES(14,'No definido','Color no definido');
+/*
+BEGIN TRANSACTION;
+CREATE TEMPORARY TABLE paloma_backup (
+   palomaID INTEGER PRIMARY KEY UNIQUE,
+   anyo INTEGER,
+   anilla VARCHAR (10),
+   nacionalidadID INTEGER,
+   sexo BOOLEAN,
+   madreID INTEGER,
+   padreID INTEGER,
+   plumajeID integer,
+   ojoID INTEGER,
+   estado CHAR,
+   nombre VARCHAR (255),
+   nota VARCHAR (1024)
+);
+INSERT INTO paloma_backup
+SELECT palomaID, anyo, anilla, nacionalidadID, sexo, madreID,
+       padreID, plumajeID, ojoID, estado, nombre, nota
+FROM paloma;
+DROP TABLE paloma;
+CREATE TABLE paloma(
+   palomaID INTEGER PRIMARY KEY UNIQUE,
+   anyo INTEGER,
+   anilla VARCHAR (10),
+   nacionalidadID INTEGER,
+   sexo BOOLEAN,
+   madreID INTEGER,
+   padreID INTEGER,
+   plumajeID integer,
+   ojoID INTEGER,
+   estado CHAR,
+   nombre VARCHAR (255),
+   nota VARCHAR (1024),
+   rfid VARCHAR (20)
+);
+INSERT INTO paloma
+SELECT palomaID, anyo, anilla, nacionalidadID, sexo, madreID,
+       padreID, plumajeID, ojoID, estado, nombre, nota, ""
+FROM paloma_backup;
+DROP TABLE paloma_backup;
+END TRANSACTION;
+*/
+
 create table paloma (
    palomaID INTEGER PRIMARY KEY UNIQUE,
    anyo INTEGER,
@@ -53,11 +97,12 @@ create table paloma (
    plumajeID integer,
    ojoID INTEGER,
    estado CHAR,
-nombre VARCHAR (255),
-nota VARCHAR (1024)
+   nombre VARCHAR (255),
+   nota VARCHAR (1024),
+	rfid VARCHAR (20)
 );
-INSERT INTO paloma VALUES(1,0000,0000000000,1,1,1,2,30,8,'R','','');
-INSERT INTO paloma VALUES(2,0000,0000000000,1,0,1,2,1,11,'D','','');
+INSERT INTO paloma VALUES(1,0000,0000000000,1,1,1,2,30,8,'R','','','');
+INSERT INTO paloma VALUES(2,0000,0000000000,1,0,1,2,1,11,'D','','','');
 CREATE TABLE parejas (
         parejaID INTEGER PRIMARY KEY UNIQUE,
         madreID INTEGER,
@@ -146,7 +191,7 @@ select paloma.palomaID as "palomaID", paloma.anyo as "anyo", paloma.anilla as
       when "R" then "Reproduccion"
       when "D" then "Desaparecida"
    end as "estado", paloma.nombre as "nombre", madre.anyo || "-" || madre.anilla || "-" || nacionmadre.iniciales
-   as "madre", padre.anyo || "-" || padre.anilla || "-" || nacionpadre.iniciales as "padre"
+   as "madre", padre.anyo || "-" || padre.anilla || "-" || nacionpadre.iniciales as "padre", paloma.rfid as "rfid"
 from paloma, nacionalidad, plumaje, ojo, paloma madre, paloma padre,
 nacionalidad nacionpadre, nacionalidad nacionmadre
 where paloma.nacionalidadID = nacionalidad.nacionalidadID
@@ -196,6 +241,21 @@ create view vistaSueltas as
    coordx as "X", coordy as "Y"
    from suelta A, tipoSuelta B
    where A.tipoSueltaID = B.tipoSueltaID;
+
+CREATE VIEW vistaPalmares AS
+	SELECT i.idCompacto as idCompacto,
+		a.palomaid as palomaID,
+		a.comprobada as comprobada,
+		b.diaSuelta as diaSuelta,
+		b.horaSuelta as horaSuelta,
+		b.nombre as nombreSuelta,
+		b.distancia as distancia
+	FROM vistaConcursantes a, vistaConcursos b, idCompacto i
+	WHERE a.comprobada not null and 
+		a.comprobada != "Desaparecida" and 
+		a.concursoid = b.concursoid and
+		a.palomaID = i.palomaID;
+
 CREATE TRIGGER delete_paloma BEFORE DELETE ON paloma
 FOR EACH ROW
 BEGIN
@@ -288,4 +348,5 @@ BEGIN
         FROM paloma
         WHERE madreID = old.palomaID OR padreID = old.palomaID;
 END;
+
 COMMIT;

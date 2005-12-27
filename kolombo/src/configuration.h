@@ -33,7 +33,7 @@ class configuration
 		int anillaSeleccion;
 
 		// Preferencias de los listados
-		int LAnyo, LAnilla, LNacion, LSexo, LMadre, LPadre, LNombre, LOjo, LPlumaje, LEstado;
+		int LAnyo, LAnilla, LNacion, LSexo, LMadre, LPadre, LNombre, LOjo, LPlumaje, LEstado, LRFID;
         QString pathTauris;
 
 		//Preferencias de las tablas de las parejas

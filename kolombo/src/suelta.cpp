@@ -12,6 +12,8 @@
 #include "suelta.h"
 #include "configuration.h"
 
+#include <math.h>
+
 #include <qdatatable.h>
 #include <qcursor.h>
 #include <qsqlquery.h>

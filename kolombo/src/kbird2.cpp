@@ -9,6 +9,7 @@
 #include "configuration.h"
 #include "gestionparametros.h"
 #include "listados.h"
+#include "arbolgen.h"
 #include "parejas.h"
 #include "updatedlg.h"
 #include "updateDetailsDlg.h"
@@ -235,6 +236,7 @@ void kbird2::setupActions()
 	(void) new KAction(i18n("Buscar paloma"), "find", CTRL+Key_B,
 					this, SLOT(buscarPalomaSlot()),
 					actionCollection(), "buscarAction");
+
 	(void) new KAction(i18n("EstadÃsticas generales"), "log",
 					CTRL+SHIFT+Key_G,
 					m_view->listadosP, SLOT(generalStatsSlot()),
@@ -254,6 +256,10 @@ void kbird2::setupActions()
                     m_view->listadosP, SLOT(pigeonsTauris()),
                     actionCollection(), "TaurisPigeonFile");
 
+    (void) new KAction(i18n("Importar palomas de TaurisClub"), "log",
+                    CTRL+SHIFT+Key_W,
+                    m_view->listadosP, SLOT(importTauris()),
+                    actionCollection(), "ImportTauris");
 	(void) new KAction(i18n("Eliminar paloma"), "button_cancel",
 					CTRL+Key_D,
 					this, SLOT(eliminarPaloma()),
@@ -408,21 +414,24 @@ void kbird2::filePrint()
     // this slot is called whenever the File->Print menu is selected,
     // the Print shortcut is pressed (usually CTRL+P) or the Print toolbar
     // button is clicked
-    if (!m_printer) m_printer = new KPrinter;
+    if (!m_printer) m_printer = new KPrinter(true, QPrinter::HighResolution);
     if (m_printer->setup(this))
     {
-        // setup the printer.  with Qt, you always "print" to a
-        // QPainter.. whether the output medium is a pixmap, a screen,
-        // or paper
-        QPainter p;
-        p.begin(m_printer);
-		m_view->listadosP->print(&p, m_printer);
-        // we let our view do the actual printing
-        QPaintDeviceMetrics metrics(m_printer);
-        m_view->print(&p, metrics.height(), metrics.width());
+			// setup the printer.  with Qt, you always "print" to a
+			// QPainter.. whether the output medium is a pixmap, a screen,
+			// or paper
+			QPainter p;
+			p.begin(m_printer);
+			if (m_view->iconList->activePageIndex() == 0)
+				m_view->listadosP->print(&p, m_printer);
+			else
+				m_view->arbolGenP->printPedigree(&p, m_printer);
+			// we let our view do the actual printing
+			QPaintDeviceMetrics metrics(m_printer);
+			m_view->print(&p, metrics.height(), metrics.width());
 
-        // and send the result to the printer
-        p.end();
+			// and send the result to the printer
+			p.end();
     }
 }
 

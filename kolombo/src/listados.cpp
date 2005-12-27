@@ -36,6 +36,7 @@
 #include <qwmatrix.h>
 #include <qdatetime.h>
 #include <qpixmap.h>
+#include <qimage.h>
 #include <qtextedit.h>
 #include <qtextstream.h>
 #include <qregexp.h>
@@ -54,6 +55,7 @@
 #include <kprinter.h>
 #include <kurlrequester.h>
 #include <kdialogbase.h>
+#include <kfiledialog.h>
 
 #include <math.h>
 
@@ -82,7 +84,8 @@ listados::listados(QWidget *parent, KMainWindow *mainWindow)
 	tablaListados->setColumnWidth(7, config().LOjo);
 	tablaListados->setColumnWidth(8, config().LEstado);
 	tablaListados->setColumnWidth(9, config().LNombre);
-	tablaListados->refresh(QDataTable::RefreshColumns);
+    tablaListados->setColumnWidth(10, config().LRFID);
+    tablaListados->refresh(QDataTable::RefreshColumns);
 	tablaListados->setNullText(QString::null);
     // signals and slots connections
     connect( tablaListados, SIGNAL( selectionChanged() ), this, SLOT( updateSeleccion() ) );
@@ -103,6 +106,7 @@ listados::~listados()
 	config().LNombre = tablaListados->columnWidth(9);
 	config().LMadre = tablaListados->columnWidth(4);
 	config().LPadre = tablaListados->columnWidth(5);
+    config().LRFID = tablaListados->columnWidth(10);
 	config().write();
 }
 
@@ -273,33 +277,43 @@ int listados::printBase (QPainter *p, KPrinter *printer, int pageNo) {
 	if (pageNo % 2) {
 		/***** ENCABEZADO ***/
 		p->setFont (KGlobalSettings::generalFont());
-		rectangulo.setTopLeft (QPoint::QPoint (margenes.width(), margenes.height() - 10));
-		rectangulo.setBottomRight(QPoint::QPoint (margenes.width() + (62 / 4) * 3, margenes.height() + (78 / 4) * 3 - 10));
-		p->drawPixmap(rectangulo, QPixmap::QPixmap ("/home/heaven/cvs/kbird2/src/fede.png"));
-		rectangulo.setTopLeft (QPoint::QPoint (margenes.width() + 10, 0));
+
+		// Colocación del icono de la paloma.
+		float factorImage = 2.5;
+		QPixmap *icono = new QPixmap ("/home/heaven/cvs/kbird2/src/fede.png");
+		QImage image = icono->convertToImage();
+		rectangulo.setTopLeft (QPoint::QPoint (margenes.width(), margenes.height()));
+		rectangulo.setBottomRight(QPoint::QPoint (margenes.width() + factorImage * icono->width(), margenes.height() + factorImage * icono->height()));
+		p->drawPixmap(rectangulo, image.smoothScale(factorImage * icono->width(), factorImage * icono->height()));
+
+
+		rectangulo.setTopLeft (QPoint::QPoint (0, 0));
 		rectangulo.setBottomRight(QPoint::QPoint (pdm.width() - margenes.width(), margenes.height()));
 		p->drawText( rectangulo, Qt::AlignRight | Qt::AlignVCenter | Qt::WordBreak, "HOJA NUM: " + QString::number(ceil (pageNo / 2)));
 		sansFont.setUnderline(true);
 		p->setFont (sansFont);
-		rectangulo.setTopLeft (QPoint::QPoint (margenes.width() + (62 / 4) * 3 + 10, margenes.height()));
+		rectangulo.setTopLeft (QPoint::QPoint (margenes.width() + (0.2 + factorImage) * icono->width(), margenes.height()));
 		rectangulo.setBottomRight(QPoint::QPoint (pdm.width() - margenes.width(), pdm.height()));
 		p->drawText (rectangulo, Qt::WordBreak | Qt::AlignJustify, "REAL FEDERACION COLOMBOFILA ESPAÑOLA");
-		rectangulo.setTopLeft (QPoint::QPoint (margenes.width() + (62 / 4) * 3, margenes.height()));
+
+		rectangulo.setTopLeft (QPoint::QPoint (margenes.width() + 1.2 * icono->width(), margenes.height()));
 		rectangulo.setBottomRight(QPoint::QPoint (pdm.width() - margenes.width(), pdm.height()));
 		p->drawText (rectangulo, Qt::WordBreak | Qt::AlignRight, "Censo de palomas mensajeras. Año 2003");
 		sansFont.setUnderline(false);
+
 		rectangulo.setTopLeft (QPoint::QPoint (margenes.width(), margenes.height() - 10));
 		rectangulo.setBottomRight(QPoint::QPoint (pdm.width() - margenes.width(), pdm.height()));
 		p->setFont (KGlobalSettings::generalFont());
 		p->drawText( rectangulo, Qt::WordBreak | Qt::AlignJustify | Qt::AlignTop,
 					"\n\n         Declaración que presenta el socio " + config().nombreP + " con D.N.I. " + config().dniP + " y licencia nº " + config().licenciaP + " perteneciente a " + config().clubP + " de las palomas de su propiedad existentes en su palomar, sito en " + config().poblacionP + " (" + config().provinciaP + "), calle " + config().calleP + " número " + config().numeroP + ".");
-		FinDelTexto = 140;
+		FinDelTexto = pdm.height() * 0.09;
 	} else {
 		QDateTime reloj;
 		QDate date(reloj.currentDateTime().date());
-		abajo -= 100;
+		abajo -= margenes.width() * 0.05;
+
 		rectangulo.setTopLeft (QPoint::QPoint (margenes.width(), abajo));
-		rectangulo.setBottomRight(QPoint::QPoint (pdm.width() - margenes.width(), abajo + 100));
+		rectangulo.setBottomRight(QPoint::QPoint (pdm.width() - margenes.width(), pdm.height()));
 		p->setFont (KGlobalSettings::generalFont());
 		p->drawText( rectangulo, Qt::AlignRight | Qt::AlignVCenter | Qt::WordBreak,
 				"Adeje a " + QString::number(date.day()) + " de " + date.longMonthName(date.month()) + " de " + QString::number(date.year()) + "\nEl propietario.");
@@ -308,20 +322,22 @@ int listados::printBase (QPainter *p, KPrinter *printer, int pageNo) {
 	}
 	/** Encabezado de la tabla ... */
 	int izquierda = margenes.width(), centro = 0;
+	int dos = margenes.width() * 0.05;
 
-	lapiz.setWidth (1);
+	lapiz.setWidth (dos / 2);
 	p->setPen (lapiz);
-	p->drawLine (izquierda - 2, FinDelTexto - 2, pdm.width() -  margenes.width() + 1, FinDelTexto- 2);
-	p->drawLine (izquierda - 2, FinDelTexto - 2, izquierda - 2, abajo);
-	p->drawLine (pdm.width() -  margenes.width() + 1, FinDelTexto - 2, pdm.width() -  margenes.width() + 1, abajo);
+	p->drawLine (izquierda - dos, FinDelTexto - dos, pdm.width() -  margenes.width() + dos / 2, FinDelTexto- dos);
+	p->drawLine (izquierda - dos, FinDelTexto - dos, izquierda - dos, abajo);
+	p->drawLine (pdm.width() -  margenes.width() + dos / 2, FinDelTexto - dos,
+						 pdm.width() - margenes.width() + dos / 2, abajo);
 
 	for (int j = 0; j < 2; j++) {
 		if (centro) {
-			izquierda = centro + 1;
+			izquierda = centro + dos / 2;
 			centro +=  ((pdm.width() - 2 * margenes.width()) / 2);
 		}
 		else
-			centro = margenes.width() + ((pdm.width() - 2 * margenes.width()) / 2) - 1;
+			centro = margenes.width() + ((pdm.width() - 2 * margenes.width()) / 2) - dos / 2;
 
 		lapiz.setColor (Qt::black);
 		lapiz.setWidth (0);
@@ -332,62 +348,85 @@ int listados::printBase (QPainter *p, KPrinter *printer, int pageNo) {
 		p->drawLine (centro, FinDelTexto, centro, abajo);
 
 		/** Texto **/
+		int largoDetalleAnilla = pdm.height() * 0.02;
+		int anchoDetalleAnilla = pdm.width() * 0.2;
+		int largoDetalles = largoDetalleAnilla * 0.8;
+		int anchoIniciales = anchoDetalleAnilla * 0.3;
+		int anchoNumero = anchoDetalleAnilla * 0.5;
+		int anchoAnyo = anchoDetalleAnilla * 0.2;
 		p->setFont (sansFont);
 		rectangulo.setTopLeft (QPoint::QPoint (izquierda, FinDelTexto));
-		rectangulo.setBottomRight(QPoint::QPoint (izquierda +170, FinDelTexto + 30));
+		rectangulo.setBottomRight(QPoint::QPoint (izquierda + anchoDetalleAnilla, FinDelTexto + largoDetalleAnilla));
 		p->drawText( rectangulo, Qt::AlignHCenter | Qt::AlignVCenter | Qt::WordBreak, "DETALLE DE LA ANILLA");
 
-		rectangulo.setTopLeft (QPoint::QPoint (izquierda, FinDelTexto + 30));
-		rectangulo.setBottomRight(QPoint::QPoint (izquierda + 50, FinDelTexto + 50));
+		rectangulo.setTopLeft (QPoint::QPoint (izquierda, FinDelTexto + largoDetalleAnilla));
+		rectangulo.setBottomRight(QPoint::QPoint (izquierda + anchoIniciales,
+																			FinDelTexto + largoDetalleAnilla + largoDetalles));
 		p->drawText( rectangulo, Qt::AlignHCenter | Qt::AlignVCenter | Qt::WordBreak, "Iniciales");
 
-		rectangulo.setTopLeft (QPoint::QPoint (izquierda + 50, FinDelTexto + 30));
-		rectangulo.setBottomRight(QPoint::QPoint (izquierda + 140, FinDelTexto + 50));
+		rectangulo.setTopLeft (QPoint::QPoint (izquierda + anchoIniciales, FinDelTexto + largoDetalleAnilla));
+		rectangulo.setBottomRight(QPoint::QPoint (izquierda + anchoIniciales + anchoNumero,
+																			FinDelTexto + largoDetalleAnilla + largoDetalles));
 		p->drawText( rectangulo, Qt::AlignHCenter | Qt::AlignVCenter | Qt::WordBreak, "Número");
 
-		rectangulo.setTopLeft (QPoint::QPoint (izquierda + 140, FinDelTexto + 30));
-		rectangulo.setBottomRight(QPoint::QPoint (izquierda + 170, FinDelTexto + 50));
+		rectangulo.setTopLeft (QPoint::QPoint (izquierda + anchoIniciales + anchoNumero, FinDelTexto + largoDetalleAnilla));
+		rectangulo.setBottomRight(QPoint::QPoint (izquierda + anchoIniciales + anchoNumero + anchoAnyo,
+																			FinDelTexto + largoDetalleAnilla + largoDetalles));
 		p->drawText( rectangulo, Qt::AlignHCenter | Qt::AlignVCenter | Qt::WordBreak, "Año");
 
 		QFont sexFont( "Arial", 6 );
 		p->setFont (sexFont);
 		rotacion.rotate (90);
 		p->setWorldMatrix( rotacion );
-		rectangulo.setTopLeft (QPoint::QPoint (FinDelTexto, -(izquierda + 185)));
-		rectangulo.setBottomRight(QPoint::QPoint (FinDelTexto + 50, -(izquierda + 172)));
+		rectangulo.setTopLeft (QPoint::QPoint (FinDelTexto, -(izquierda + anchoDetalleAnilla)));
+		rectangulo.setBottomRight(QPoint::QPoint (FinDelTexto + largoDetalleAnilla + largoDetalles,
+																	-(izquierda + anchoDetalleAnilla + largoDetalles)));
 		p->drawText( rectangulo, Qt::AlignHCenter | Qt::AlignVCenter | Qt::BreakAnywhere,  "SEXO");
 		rotacion.rotate (-90);
 		p->setWorldMatrix( rotacion );
 		p->setFont (sansFont);
 
-		rectangulo.setTopLeft (QPoint::QPoint (izquierda + 185,  FinDelTexto));
-		rectangulo.setBottomRight(QPoint::QPoint (centro, FinDelTexto + 50));
+		rectangulo.setTopLeft (QPoint::QPoint (izquierda + anchoDetalleAnilla,  FinDelTexto));
+		rectangulo.setBottomRight(QPoint::QPoint (centro, FinDelTexto + largoDetalleAnilla + largoDetalles));
 		p->drawText( rectangulo, Qt::AlignHCenter | Qt::AlignVCenter | Qt::WordBreak, "C O L O R");
 		/** Horizontales **/
-		p->drawLine (izquierda, FinDelTexto + 30, izquierda + 170, FinDelTexto + 30);
-		p->drawLine (izquierda, FinDelTexto + 50, izquierda + 170, FinDelTexto + 50);
-		p->drawLine (izquierda + 172, FinDelTexto + 50, centro, FinDelTexto + 50);
+		p->drawLine (izquierda, FinDelTexto + largoDetalleAnilla,
+							 izquierda + anchoDetalleAnilla, FinDelTexto + largoDetalleAnilla);
+		p->drawLine (izquierda, FinDelTexto + largoDetalleAnilla + largoDetalles,
+							 izquierda + anchoDetalleAnilla, FinDelTexto + largoDetalleAnilla + largoDetalles);
+		p->drawLine (izquierda + dos + anchoDetalleAnilla, FinDelTexto + largoDetalleAnilla + largoDetalles,
+							 centro, FinDelTexto + largoDetalleAnilla + largoDetalles);
 
 		/** Verticales **/
-		p->drawLine (izquierda + 170, FinDelTexto, izquierda + 170, abajo);
-		p->drawLine (izquierda + 172, FinDelTexto, izquierda + 172, abajo);
-		p->drawLine (izquierda + 185, FinDelTexto, izquierda + 185, abajo);
-		p->drawLine (izquierda + 50, FinDelTexto + 30, izquierda + 50, abajo);
-		p->drawLine (izquierda + 140, FinDelTexto + 30, izquierda + 140, abajo);
+		p->drawLine (izquierda + anchoDetalleAnilla, FinDelTexto, izquierda + anchoDetalleAnilla, abajo);
+		p->drawLine (izquierda + anchoDetalleAnilla + dos, FinDelTexto, izquierda + anchoDetalleAnilla + dos, abajo);
+
+		p->drawLine (izquierda + anchoDetalleAnilla + largoDetalles, FinDelTexto,
+							 izquierda + anchoDetalleAnilla + largoDetalles, abajo);
+
+		p->drawLine (izquierda + anchoIniciales , FinDelTexto + largoDetalleAnilla,
+							 izquierda + anchoIniciales , abajo);
+
+		p->drawLine (izquierda + anchoIniciales + anchoNumero, FinDelTexto + largoDetalleAnilla,
+							 izquierda + anchoIniciales + anchoNumero, abajo);
 
 		/** Suma anterior ... **/
 		if ((pageNo != 1)||(j == 1)) {
 			lapiz.setColor(Qt::white);
-			lapiz.setWidth (3);
+			lapiz.setWidth (dos * 1.5);
 			p->setPen (lapiz);
-			p->drawLine (izquierda + 140, FinDelTexto + 70, izquierda + 140, FinDelTexto + 100);
+			p->drawLine (izquierda + anchoIniciales + anchoNumero, FinDelTexto + 1.5 * largoDetalleAnilla + largoDetalles,
+								 izquierda + anchoIniciales + anchoNumero, FinDelTexto + 2 * (largoDetalleAnilla + largoDetalles));
 			lapiz.setColor(Qt::black);
 			lapiz.setStyle (Qt::DotLine);
 			lapiz.setWidth (0);
 			p->setPen (lapiz);
-			p->drawLine (izquierda + 172, FinDelTexto + 90, centro, FinDelTexto + 90);
-			rectangulo.setTopLeft (QPoint::QPoint (izquierda + 70, FinDelTexto + 80));
-			rectangulo.setBottomRight(QPoint::QPoint (izquierda + 168, FinDelTexto + 93));
+			p->drawLine (izquierda + anchoDetalleAnilla, FinDelTexto + 2 * largoDetalleAnilla + largoDetalles,
+								 centro, FinDelTexto + 2 * largoDetalleAnilla + largoDetalles);
+			rectangulo.setTopLeft (QPoint::QPoint (izquierda + anchoIniciales,
+											FinDelTexto + largoDetalleAnilla + largoDetalles));
+			rectangulo.setBottomRight(QPoint::QPoint (izquierda + anchoDetalleAnilla,
+											FinDelTexto + 2 * largoDetalleAnilla + largoDetalles + dos * 1.5));
 			p->drawText( rectangulo,  Qt::AlignRight | Qt::AlignBottom | Qt::BreakAnywhere,  "Suma anterior . . . .");
 		}
 
@@ -395,7 +434,7 @@ int listados::printBase (QPainter *p, KPrinter *printer, int pageNo) {
 		lapiz.setStyle (Qt::DotLine);
 		p->setPen (lapiz);
 		int i;
-		for (i = FinDelTexto + 110; i < abajo - 40; i += 20) {
+		for (i = FinDelTexto + 2 * (largoDetalles + largoDetalleAnilla); i < abajo - 2 * largoDetalles; i += largoDetalles) {
 			p->drawLine (izquierda, i, centro, i);
 			divisiones++;
 		}
@@ -403,16 +442,17 @@ int listados::printBase (QPainter *p, KPrinter *printer, int pageNo) {
 		/** Suma y sigue ... **/
 		lapiz.setColor(Qt::white);
 		lapiz.setStyle (Qt::SolidLine);
-		lapiz.setWidth (3);
+		lapiz.setWidth (dos * 1.5);
 		p->setPen (lapiz);
-		p->drawLine (izquierda + 140, i, izquierda + 140, i + 30);
+		p->drawLine (izquierda + anchoIniciales + anchoNumero, i,
+							 izquierda + anchoIniciales + anchoNumero, abajo);
 		lapiz.setColor(Qt::black);
 		lapiz.setStyle (Qt::DotLine);
 		lapiz.setWidth (0);
 		p->setPen (lapiz);
-		p->drawLine (izquierda + 172, i + 20, centro, i + 20);
-		rectangulo.setTopLeft (QPoint::QPoint (izquierda + 70, i));
-		rectangulo.setBottomRight(QPoint::QPoint (izquierda + 168, i + 23));
+		p->drawLine (izquierda + anchoDetalleAnilla, i + largoDetalleAnilla, centro, i + largoDetalleAnilla);
+		rectangulo.setTopLeft (QPoint::QPoint (izquierda + anchoIniciales, i));
+		rectangulo.setBottomRight(QPoint::QPoint (izquierda + anchoDetalleAnilla, i + largoDetalleAnilla + dos * 1.5));
 		p->drawText( rectangulo,  Qt::AlignRight | Qt::AlignBottom | Qt::BreakAnywhere,  "Suma y sigue . . . .");
 	}
 	return (divisiones / 2);
@@ -439,12 +479,20 @@ void listados::print (QPainter *p, KPrinter * printer) {
 	int y;
 	int palomasImpresas = 0;
 	int centro = 0;
+	int dos = margenes.width() * 0.05;
+
+	int largoDetalleAnilla = pdm.height() * 0.02;
+	int anchoDetalleAnilla = pdm.width() * 0.2;
+	int largoDetalles = largoDetalleAnilla * 0.8;
+	int anchoIniciales = anchoDetalleAnilla * 0.2;
+	int anchoNumero = anchoDetalleAnilla * 0.6;
+	int anchoAnyo = anchoDetalleAnilla * 0.2;
 
 	while (true) {
 		pageNo++;
 		int divisiones = printBase (p, printer, pageNo);
 		if (pageNo % 2)
-			FinDelTexto = 140;
+			FinDelTexto = pdm.height() * 0.09;
 		else
 			FinDelTexto = margenes.height();
 		izquierda = margenes.width();
@@ -456,40 +504,40 @@ void listados::print (QPainter *p, KPrinter * printer) {
 			}
 			y = FinDelTexto;
 			if ((pageNo != 1)||(j == 1)) {
-				rectangulo.setTopLeft (QPoint::QPoint (izquierda + 185, y + 50));
-				rectangulo.setBottomRight(QPoint::QPoint (centro, y + 90));
+				rectangulo.setTopLeft (QPoint::QPoint (izquierda + anchoDetalleAnilla + largoDetalles, y));
+				rectangulo.setBottomRight(QPoint::QPoint (centro, y + 2 * largoDetalleAnilla + largoDetalles + 1.5 * dos));
 				p->setFont(sumaFont);
 				p->drawText( rectangulo, Qt::AlignHCenter |Qt::AlignBottom | Qt::WordBreak, QString::number(palomasImpresas));
 				p->setFont(sansFont);
 			}
-			y += 90;
+			y += 2 * largoDetalleAnilla + largoDetalles;
 			for (int i = 0; i < divisiones; i++) {
-				y += 20;
-				rectangulo.setTopLeft (QPoint::QPoint (izquierda, y - 20));
-				rectangulo.setBottomRight(QPoint::QPoint (izquierda + 50, y));
+				y += largoDetalles;
+				rectangulo.setTopLeft (QPoint::QPoint (izquierda, y - largoDetalles));
+				rectangulo.setBottomRight(QPoint::QPoint (izquierda + anchoIniciales, y));
 				p->drawText( rectangulo, Qt::AlignHCenter |Qt::AlignBottom | Qt::WordBreak, tablaListados->text(palomasImpresas, 2));
 
-				rectangulo.setTopLeft (QPoint::QPoint (izquierda + 50, y - 20));
-				rectangulo.setBottomRight(QPoint::QPoint (izquierda + 140, y));
+				rectangulo.setTopLeft (QPoint::QPoint (izquierda + anchoIniciales, y - largoDetalles));
+				rectangulo.setBottomRight(QPoint::QPoint (izquierda + anchoIniciales + anchoNumero, y));
 				p->drawText( rectangulo, Qt::AlignHCenter |Qt::AlignBottom | Qt::WordBreak, tablaListados->text(palomasImpresas, 1));
 
-				rectangulo.setTopLeft (QPoint::QPoint (izquierda + 140, y - 20));
-				rectangulo.setBottomRight(QPoint::QPoint (izquierda + 170, y));
+				rectangulo.setTopLeft (QPoint::QPoint (izquierda + anchoIniciales + anchoNumero, y - largoDetalles));
+				rectangulo.setBottomRight(QPoint::QPoint (izquierda + anchoDetalleAnilla, y));
 				p->drawText( rectangulo, Qt::AlignHCenter |Qt::AlignBottom | Qt::WordBreak, tablaListados->text(palomasImpresas, 0));
 
-				rectangulo.setTopLeft (QPoint::QPoint (izquierda + 172, y - 20));
-				rectangulo.setBottomRight(QPoint::QPoint (izquierda + 185, y));
+				rectangulo.setTopLeft (QPoint::QPoint (izquierda + anchoDetalleAnilla + dos, y - largoDetalles));
+				rectangulo.setBottomRight(QPoint::QPoint (izquierda + anchoDetalleAnilla + largoDetalles, y));
 				p->drawText( rectangulo, Qt::AlignHCenter |Qt::AlignBottom | Qt::WordBreak, tablaListados->text(palomasImpresas, 3), 1);
 
-				rectangulo.setTopLeft (QPoint::QPoint (izquierda + 185, y - 20));
+				rectangulo.setTopLeft (QPoint::QPoint (izquierda + anchoDetalleAnilla + largoDetalles, y - largoDetalles));
 				rectangulo.setBottomRight(QPoint::QPoint (centro, y));
 				p->drawText( rectangulo, Qt::AlignHCenter |Qt::AlignBottom | Qt::WordBreak, tablaListados->text(palomasImpresas, 6));
 				palomasImpresas++;
 				if (palomasImpresas >= tablaListados->numRows())
 					break;
 			}
-			rectangulo.setTopLeft (QPoint::QPoint (izquierda + 185, FinDelTexto + 90 + (divisiones - 1) * 20));
-			rectangulo.setBottomRight(QPoint::QPoint (centro, FinDelTexto + 90 + (divisiones + 2) * 20));
+			rectangulo.setTopLeft (QPoint::QPoint (izquierda + anchoDetalleAnilla + largoDetalles, 0));
+			rectangulo.setBottomRight(QPoint::QPoint (centro, FinDelTexto + 3 * largoDetalleAnilla + (divisiones + 2) * largoDetalles + 1.5 * dos));
 			p->setFont(sumaFont);
 			p->drawText( rectangulo, Qt::AlignHCenter |Qt::AlignBottom | Qt::WordBreak, QString::number(palomasImpresas));
 			p->setFont(sansFont);
@@ -531,7 +579,7 @@ void listados::pigeonsTauris()
     QString consulta (" from listaGeneral");
     if (!tablaListados->filter().isNull() && !tablaListados->filter().isEmpty())
         consulta += " where " + tablaListados->filter();
-    d->fichero->append("<a name=\"top\"\>");
+    d->fichero->append("<a name=\"top\">");
     QSqlQuery queryCount ("select count (*)" + consulta, QSqlDatabase::database("palomar"));
     if (queryCount.isActive()) {
         queryCount.next();
@@ -559,5 +607,75 @@ void listados::pigeonsTauris()
             stream << d->fichero->text().replace( QRegExp("\n"), "\r\n" );
             d->fichero->setModified( FALSE );
         }
+    }
+}
+
+/* Importa los datos al listado desde el formato que utiliza la versión 1.41 del TaurisClub, sistema de control de palomas.
+El formato es el siguiente:
+------------------------------------------------------------------------------------------
+ <número de palomas\>
+<nacionalidad\>   <año\>    <anilla\><sexo\>1300000000<Color 4 caracteres en mayúsculas\>
+------------------------------------------------------------------------------------------
+
+*/
+
+void listados::importTauris() {
+    int numPalomas;
+    QString rfid;
+    QString nacion;
+    QString anilla;
+    QString sexo;
+    QString consulta;
+    QString consultaActualizacion;
+    consultaActualizacion = "";
+    int anyo;
+    QFile fichero(KFileDialog::getOpenFileName ());
+    QStringList lines;
+    if ( fichero.open( IO_ReadOnly ) ) {
+        QTextStream stream( &fichero );
+        QString line;
+        line = stream.readLine();
+        numPalomas = line.toInt();
+        printf("Num palomas: %d", numPalomas);
+        int i = 0;
+        while ( !stream.atEnd() ) {
+            anyo = 0;
+            line = stream.readLine(); // line of text excluding '\n'
+            if (line.mid(4, 2).toInt() > 50)
+                anyo = 1900 + line.mid(4, 2).toInt();
+            else
+                anyo = 2000 + line.mid(4, 2).toInt();
+            if (line.mid(17, 10) == "1300000000")
+                rfid = "";
+            else
+                rfid = line.mid(17, 10);
+            nacion = line.left(1).latin1();
+            anilla = line.mid(10, 6).latin1();
+            sexo = line.mid(16, 1).latin1();
+            // Ahora hay que buscar la paloma en la tabla y actualizar el valor del rfid y las palomas
+            // Que no estén en el listado indicarlas y preguntar si se quiere introducir la paloma en el listado o no.
+            QSqlQuery querySelect ("SELECT * \
+                                   FROM paloma \
+                                   WHERE anyo = " + QString::number(anyo) + " AND anilla = \"" + anilla + "\";\n",
+                                   QSqlDatabase::database("palomar"));
+            if (querySelect.isActive()) {
+                bool almenos1 = false;
+                while (querySelect.next())
+                    almenos1 = true;
+                if (almenos1 && (rfid != "")) {
+                    consultaActualizacion =  ("UPDATE paloma SET rfid = \"" + rfid + "\" WHERE anyo = " + QString::number(anyo) + " AND anilla = \"" + anilla + "\";");
+                    QSqlQuery queryUpdate (consultaActualizacion,QSqlDatabase::database("palomar"));
+                    QSqlError error = queryUpdate.lastError();
+                    if (error.type() != QSqlError::None)
+                        KMessageBox::error (this, 
+                                        i18n("Error actualizando la paloma. El error devuelto por la base de datos es:\n") +
+                                        error.databaseText(),
+                                        i18n ("Error actualizando la paloma"));
+                } else if (!almenos1) {
+                    
+                }
+            }
+        }
+        fichero.close();
     }
 }

@@ -16,6 +16,7 @@
 				<Action name="bkpAction"/>
 			</Menu>
             <Action name="TaurisPigeonFile"/>
+            <Action name="ImportTauris"/>
 		</Menu>
 		<Menu name="Parejas"><text>Parejas</text>
 			<Action name="eliminarParejaAction"/>

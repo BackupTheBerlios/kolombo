@@ -39,7 +39,7 @@ palomarDataTable::palomarDataTable( QWidget * parent, const char * name)
  , timerFiltro(new QTimer(this))
 {
     filtro = new QString();
-    // Cacho de puthon para generar los colorcitos ...
+    // Cacho de python para generar los colorcitos ...
     //for i in range (0, 40):
     //    print "coloresAnyos.append(QColor (" + str(int(random.random()*255)) + ", " + str(int(random.random()*255)) + ", "+ str(int(random.random()*255)) + "));"
     coloresAnyos.append(QColor (33, 49, 197));
@@ -93,8 +93,10 @@ palomarDataTable::palomarDataTable( QWidget * parent, const char * name)
     this->addColumn( "ojo", tr2i18n( "Ojo" ) );
     this->addColumn( "estado", tr2i18n( "Estado" ) );
     this->addColumn( "nombre", tr2i18n( "Nombre" ) );
+    this->addColumn( "rfid", tr2i18n ( "rfid" ) );
     this->setReadOnly( TRUE );
     this->setSorting( TRUE );
+    this->refresh(QDataTable::RefreshColumns);
     QStringList dataTable1_stringlist;
     dataTable1_stringlist << "anyo DESC";
     dataTable1_stringlist << "anilla ASC";

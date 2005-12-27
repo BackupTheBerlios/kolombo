@@ -11,28 +11,29 @@ INCLUDES         = $(all_includes)
 kbird2_LDFLAGS = $(KDE_RPATH) $(all_libraries)
 
 # the libraries to link against.
-kbird2_LDADD   = $(LIB_KFILE) $(LIB_KDEPRINT) 
+kbird2_LDADD   = $(LIB_KFILE) $(LIB_KDEPRINT) -lm
 
 # which sources should be compiled for kbird2
 kbird2_SOURCES = main.cpp kbird2.cpp kbird2view.cpp kbird2iface.skel listados.h \
-	listados.cpp listadosWdg.ui pageonewdg.ui configuration.h configuration.cpp \
-	ojoWdg.ui gestionparametros.h gestionparametros.cpp ojo.h ojo.cpp plumaje.h \
-	plumaje.cpp plumajeWdg.ui nacionWdg.ui nacion.h nacion.cpp tiposueltaWdg.ui \
-	tiposuelta.h tiposuelta.cpp parejasWdg.ui parejas.h parejas.cpp nuevaparejaWdg.ui \
-	nuevoHijoDlg.ui datosPalomaWdg.ui datospaloma.h datospaloma.cpp arbolGenWdg.ui \
-	arbolgen.h arbolgen.cpp buscar.cpp parejasStatsDlg.ui parejasstats.cpp \
-	basechart.cpp generalstats.cpp sueltasWdg.ui suelta.cpp pagetwowdg.ui \
-	kbird2config.kcfgc updatePrefWdg.ui pref.cpp updatedlg.ui updateDetailsDlg.ui \
-	concursosWdg.ui concursos.cpp nuevoConcursoDlg.ui nuevoconcurso.cpp comprobarDlg.ui \
-	comprobar.cpp palomardatatable.cpp palomardatatable.h exportarTaurisWdg.ui \
-	buscarWdg.ui
+		listados.cpp listadosWdg.ui pageonewdg.ui configuration.h configuration.cpp \
+		ojoWdg.ui gestionparametros.h gestionparametros.cpp ojo.h ojo.cpp plumaje.h \
+		plumaje.cpp plumajeWdg.ui nacionWdg.ui nacion.h nacion.cpp tiposueltaWdg.ui \
+		tiposuelta.h tiposuelta.cpp parejasWdg.ui parejas.h parejas.cpp nuevaparejaWdg.ui \
+		nuevoHijoDlg.ui datosPalomaWdg.ui datospaloma.h datospaloma.cpp arbolGenWdg.ui \
+		arbolgen.h arbolgen.cpp buscar.cpp parejasStatsDlg.ui parejasstats.cpp \
+		basechart.cpp generalstats.cpp sueltasWdg.ui suelta.cpp pagetwowdg.ui \
+		kbird2config.kcfgc updatePrefWdg.ui pref.cpp updatedlg.ui updateDetailsDlg.ui \
+		concursosWdg.ui concursos.cpp nuevoConcursoDlg.ui nuevoconcurso.cpp comprobarDlg.ui \
+		comprobar.cpp palomardatatable.cpp palomardatatable.h exportarTaurisWdg.ui \
+		buscarWdg.ui palomasimportadas.ui 
 
 # Añadido por mi para adaptar la aplicación a KConfigXT
 kde_kcfg_DATA = kbird2.kcfg
 
 # these are the headers for your project
 noinst_HEADERS = kbird2.h kbird2view.h pref.h buscar.h parejasstats.h \
-	basechart.h generalstats.h suelta.h concursos.h nuevoconcurso.h comprobar.h
+		basechart.h generalstats.h suelta.h concursos.h nuevoconcurso.h comprobar.h \
+	palomasimportadas.h
 
 # client stuff
 kbird2_client_LDFLAGS = $(KDE_RPATH) $(all_libraries)

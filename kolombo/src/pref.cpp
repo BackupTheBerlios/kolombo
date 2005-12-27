@@ -8,6 +8,8 @@
 #include "pagetwowdg.h"
 #include "updatePrefWdg.h"
 
+#include <math.h>
+
 #include <klocale.h>
 #include <kmessagebox.h>
 

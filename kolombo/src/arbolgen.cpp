@@ -16,154 +16,404 @@
 #include <qvariant.h>
 #include <qsqlquery.h>
 #include <qsqldatabase.h>
+#include <qlistview.h>
+#include <qpixmap.h>
+#include <qdatatable.h>
+#include <qlabel.h>
+#include <qpainter.h>
+#include <qfontmetrics.h>
+#include <qrect.h>
+#include <qpoint.h>
+#include <qsize.h>
+#include <qpaintdevicemetrics.h>
+#include <qcolor.h>
+#include <qpen.h>
+#include <qfont.h>
+#include <qwmatrix.h>
+#include <qdatetime.h>
+
+
+#include <kprinter.h>
 
 arbolGen::arbolGen(QWidget *parent)
 : arbolGenWdg (parent, "arbolGenWdg", 0)
 {
+	arbolGenlistView->setRootIsDecorated (true);
+	arbolGenlistView->setSelectionMode (QListView::Single);
 }
 
 
 arbolGen::~arbolGen()
 {
+	arbolGenlistView->setRootIsDecorated (true);
 }
 
-void arbolGen::loadData () {
-
-	palomaID = palomaID.setNum (config().anillaSeleccion);
+void arbolGen::addPaloma (QListViewItem *root, QString palomaID) {
+	QListViewItem *paloma;
 
 	QString consulta = "SELECT idCompacto.idCompacto , listaGeneral.plumaje, listaGeneral.ojo, \
 			listaGeneral.sexo, paloma.madreID, paloma.padreID\
 			FROM idCompacto, listaGeneral, paloma\
-			WHERE idCompacto.palomaID = " + palomaID + " AND listaGeneral.palomaID = " + palomaID + " AND paloma.palomaID = " + palomaID;
-	QSqlQuery query1 (consulta, QSqlDatabase::database("palomar" ));
-	if (query1.next()) {
-		individuo->setTitle(query1.value(0).toString());
-		indSexo->setText(query1.value(3).toString());
-		indOjo->setText(query1.value(2).toString());
-		indPlumaje->setText(query1.value(1).toString());
-		madreID = query1.value(4).toString();
-		padreID = query1.value(5).toString();
+			WHERE idCompacto.palomaID = " + palomaID + " \
+			AND listaGeneral.palomaID = " + palomaID + " \
+			AND paloma.palomaID = " + palomaID;
+	QSqlQuery query (consulta, QSqlDatabase::database("palomar" ));
+	if (query.next()) {
+		paloma = new QListViewItem( root,
+							 query.value(0).toString(),
+							 query.value(3).toString(),
+							 query.value(1).toString(),
+							 query.value(2).toString()
+							 );	
+		madreID = query.value(4).toString();
+		addPaloma (paloma, madreID);
+		padreID = query.value(5).toString();
+		addPaloma (paloma, padreID);
+		if (query.value(3).toString() == "Macho")
+			paloma->setPixmap(0, QPixmap("/home/heaven/cvs/kolombo-genealogia/macho-icono.png"));
+		else
+			paloma->setPixmap(0, QPixmap("/home/heaven/cvs/kolombo-genealogia/hembra-icono.png"));
+	}
+}
+
+void arbolGen::loadData () {
+	QListViewItem *element;
+
+	arbolGenlistView->clear();
+	palomaID = palomaID.setNum (config().anillaSeleccion);
+	QString consulta = "SELECT idCompacto.idCompacto , listaGeneral.plumaje, listaGeneral.ojo, \
+			listaGeneral.sexo, paloma.madreID, paloma.padreID\
+			FROM idCompacto, listaGeneral, paloma\
+			WHERE idCompacto.palomaID = " + palomaID + " \
+			AND listaGeneral.palomaID = " + palomaID + " \
+			AND paloma.palomaID = " + palomaID;
+	QSqlQuery query (consulta, QSqlDatabase::database("palomar" ));
+	if (query.next()) {
+		element = new QListViewItem( arbolGenlistView,
+							 query.value(0).toString(),
+							 query.value(3).toString(),
+							 query.value(1).toString(),
+							 query.value(2).toString()
+							 );	
+		madreID = query.value(4).toString();
+		addPaloma (element, madreID);
+		padreID = query.value(5).toString();
+		addPaloma (element, padreID);
+		if (query.value(3).toString() == "Macho")
+			element->setPixmap(0, QPixmap("/home/heaven/cvs/kolombo-genealogia/macho-icono.png"));
+		else
+			element->setPixmap(0, QPixmap("/home/heaven/cvs/kolombo-genealogia/hembra-icono.png"));
 	}
 
-	consulta = "SELECT idCompacto.idCompacto , listaGeneral.plumaje, listaGeneral.ojo, \
-					listaGeneral.sexo, paloma.madreID, paloma.padreID\
-					FROM idCompacto, listaGeneral, paloma\
-					WHERE idCompacto.palomaID = " + madreID + " AND listaGeneral.palomaID = " + madreID + " AND paloma.palomaID = " + madreID;
-	QSqlQuery query2 (consulta, QSqlDatabase::database("palomar" ));
-	if (query2.next()) {
-		madre->setTitle(query2.value(0).toString());
-		madreSexo->setText(query2.value(3).toString());
-		madreOjo->setText(query2.value(2).toString());
-		madrePlumaje->setText(query2.value(1).toString());
-		abuelaMID = query2.value(4).toString();
-		abueloMID = query2.value(5).toString();
-	} else {
-		abuelaMID = "1";
-		abueloMID = "2";
-	}
-
-	consulta = "SELECT idCompacto.idCompacto , listaGeneral.plumaje, listaGeneral.ojo, \
-					listaGeneral.sexo, paloma.madreID, paloma.padreID\
-					FROM idCompacto, listaGeneral, paloma\
-					WHERE idCompacto.palomaID = " + padreID + " AND listaGeneral.palomaID = " + padreID + " AND paloma.palomaID = " + padreID;
-	QSqlQuery query3 (consulta, QSqlDatabase::database("palomar"));
-	if (query3.next()) {
-		padre->setTitle(query3.value(0).toString());
-		padreSexo->setText(query3.value(3).toString());
-		padreOjo->setText(query3.value(2).toString());
-		padrePlumaje->setText(query3.value(1).toString());
-		abuelaPID = query3.value(4).toString();
-		abueloPID = query3.value(5).toString();
-	} else {
-		abuelaPID = "1";
-		abueloPID = "2";
-	}
-
-	consulta = "SELECT idCompacto.idCompacto , listaGeneral.plumaje, listaGeneral.ojo, \
-					listaGeneral.sexo \
-					FROM idCompacto, listaGeneral, paloma\
-					WHERE idCompacto.palomaID = " + abuelaMID + " AND listaGeneral.palomaID = " + abuelaMID + " AND \
-					paloma.palomaID = " + abuelaMID;
-	QSqlQuery query4 (consulta, QSqlDatabase::database("palomar"));
-	if (query4.next()) {
-		abuelaM->setTitle(query4.value(0).toString());
-		abuelaMSexo->setText(query4.value(3).toString());
-		abuelaMOjo->setText(query4.value(2).toString());
-		abuelaMPlumaje->setText(query4.value(1).toString());
-	}
-
-	consulta = "SELECT idCompacto.idCompacto , listaGeneral.plumaje, listaGeneral.ojo, \
-					listaGeneral.sexo \
-					FROM idCompacto, listaGeneral, paloma\
-					WHERE idCompacto.palomaID = " + abueloMID + " AND listaGeneral.palomaID = " + abueloMID + " AND \
-					paloma.palomaID = " + abueloMID;
-	QSqlQuery query5 (consulta, QSqlDatabase::database("palomar"));
-	if (query5.next()) {
-		abueloM->setTitle(query5.value(0).toString());
-		abueloMSexo->setText(query5.value(3).toString());
-		abueloMOjo->setText(query5.value(2).toString());
-		abueloMPlumaje->setText(query5.value(1).toString());
-	}
-
-	consulta = "SELECT idCompacto.idCompacto , listaGeneral.plumaje, listaGeneral.ojo, \
-					listaGeneral.sexo\
-					FROM idCompacto, listaGeneral, paloma\
-					WHERE idCompacto.palomaID = " + abuelaPID + " AND listaGeneral.palomaID = " + abuelaPID + " AND \
-					paloma.palomaID = " + abuelaPID;
-	QSqlQuery query6 (consulta, QSqlDatabase::database("palomar"));
-	if (query6.next()) {
-		abuelaP->setTitle(query6.value(0).toString());
-		abuelaPSexo->setText(query6.value(3).toString());
-		abuelaPOjo->setText(query6.value(2).toString());
-		abuelaPPlumaje->setText(query6.value(1).toString());
-	}
-
-	consulta = "SELECT idCompacto.idCompacto , listaGeneral.plumaje, listaGeneral.ojo, \
-					listaGeneral.sexo\
-					FROM idCompacto, listaGeneral, paloma\
-					WHERE idCompacto.palomaID = " + abueloPID + " AND listaGeneral.palomaID = " + abueloPID + " AND \
-					paloma.palomaID = " + abueloPID;
-	QSqlQuery query7 (consulta, QSqlDatabase::database("palomar"));
-	if (query7.next()) {
-		abueloP->setTitle(query7.value(0).toString());
-		abueloPSexo->setText(query7.value(3).toString());
-		abueloPOjo->setText(query7.value(2).toString());
-		abueloPPlumaje->setText(query7.value(1).toString());
-	}
 }
 
 void arbolGen::showEvent( QShowEvent *e )
 {
 	loadData ();
+	palmaresLabel->setText (QString ("Palmares de "));
+	tablaPalmares->setFilter (QString ("idCompacto = \"NINGUNO\""));
+	tablaPalmares->refresh(QDataTable::RefreshAll);
 }
 
 
-void arbolGen::subirMadre() {
-	config().anillaSeleccion = madreID.toInt();
-	loadData ();
+void arbolGen::actualizarPalmares(QListViewItem *item) {
+	palmaresLabel->setText (QString ("Palmares de " + item->text(0)));
+	tablaPalmares->setFilter (QString ("idCompacto = \"" + item->text(0) + "\""));
+	tablaPalmares->refresh(QDataTable::RefreshAll);
 }
 
-void arbolGen::subirPadre() {
-	config().anillaSeleccion = padreID.toInt();
-	loadData ();
+/*
+ * Esta función imprime el pedigree de una paloma.
+ ****************************/
+void arbolGen::printPedigree (QPainter *p, KPrinter * printer) {
+	//QWarning ("Imprimiendo pedigree");
+	//printer->setResolution (600);
+	QRect rectangulo;
+	QPaintDeviceMetrics pdm (printer);
+	QSize margenes;
+	QPen lapiz;
+	QWMatrix rotacion;
+	QFont sumaFont( "Sans Serif", 18);
+	QFont sansFont( "Sans Serif", 8 );
+	int pageNo = 0;
+
+	margenes = printer->margins();
+	int comienzoCuadradoX = margenes.width();
+	int comienzoCuadradoY = margenes.height();
+	int finCuadradoX = pdm.width() - margenes.width();
+	int finCuadradoY = pdm.height() / 2;
+
+	// Marco exterior
+	p->drawLine (comienzoCuadradoX, comienzoCuadradoY, finCuadradoX, comienzoCuadradoY);
+	p->drawLine (comienzoCuadradoX, comienzoCuadradoY, comienzoCuadradoX, finCuadradoY);
+	p->drawLine (comienzoCuadradoX, finCuadradoY, finCuadradoX, finCuadradoY);
+	p->drawLine (finCuadradoX, finCuadradoY, finCuadradoX, comienzoCuadradoY);
+
+	// Hueco por encima para la paloma en cuestión: 1/3 del ancho total.
+	int parteSuperior = ((finCuadradoY - comienzoCuadradoY) / 3) + comienzoCuadradoY;
+	p->drawLine (comienzoCuadradoX, parteSuperior, finCuadradoX, parteSuperior);
+
+	// Divisiones verticales para padres, abuelos y tataraabuelos
+	int anchoDivision = (finCuadradoX - comienzoCuadradoX) / 3;
+	p->drawLine (comienzoCuadradoX + anchoDivision, parteSuperior, comienzoCuadradoX + anchoDivision, finCuadradoY);
+	p->drawLine (comienzoCuadradoX + 2 * anchoDivision, parteSuperior, comienzoCuadradoX + 2 * anchoDivision, finCuadradoY);
+
+	// División horizontal para padres
+	int divisionHorizPadres = 2 * ((finCuadradoY - comienzoCuadradoY) / 3) + comienzoCuadradoY;
+	p->drawLine (comienzoCuadradoX, divisionHorizPadres, comienzoCuadradoX + anchoDivision, divisionHorizPadres);
+
+	// División horizontal para abuelos
+	int divisionHorizAbuelos = ((finCuadradoY - comienzoCuadradoY) / 3) / 2;
+	p->drawLine (comienzoCuadradoX + anchoDivision, parteSuperior + divisionHorizAbuelos,
+						 comienzoCuadradoX + 2 * anchoDivision, parteSuperior + divisionHorizAbuelos);
+	p->drawLine (comienzoCuadradoX + anchoDivision, parteSuperior + divisionHorizAbuelos * 2,
+						 comienzoCuadradoX + 2 * anchoDivision, parteSuperior + divisionHorizAbuelos * 2);
+	p->drawLine (comienzoCuadradoX + anchoDivision, parteSuperior + divisionHorizAbuelos * 3,
+						 comienzoCuadradoX + 2 * anchoDivision, parteSuperior + divisionHorizAbuelos * 3);
+
+	// División horizontal para Tatarabuelos
+	int divisionHorizTatarabuelos = ((finCuadradoY - comienzoCuadradoY) / 3) / 4;
+	p->drawLine (comienzoCuadradoX + 2 * anchoDivision, parteSuperior + divisionHorizTatarabuelos,
+						 comienzoCuadradoX + 3 * anchoDivision, parteSuperior + divisionHorizTatarabuelos);
+	p->drawLine (comienzoCuadradoX + 2 * anchoDivision, parteSuperior + divisionHorizTatarabuelos * 2,
+						 comienzoCuadradoX + 3 * anchoDivision, parteSuperior + divisionHorizTatarabuelos * 2);
+	p->drawLine (comienzoCuadradoX + 2 * anchoDivision, parteSuperior + divisionHorizTatarabuelos * 3,
+						 comienzoCuadradoX + 3 * anchoDivision, parteSuperior + divisionHorizTatarabuelos * 3);
+	p->drawLine (comienzoCuadradoX + 2 * anchoDivision, parteSuperior + divisionHorizTatarabuelos * 4,
+						 comienzoCuadradoX + 3 * anchoDivision, parteSuperior + divisionHorizTatarabuelos * 4);
+	p->drawLine (comienzoCuadradoX + 2 * anchoDivision, parteSuperior + divisionHorizTatarabuelos * 5,
+						 comienzoCuadradoX + 3 * anchoDivision, parteSuperior + divisionHorizTatarabuelos * 5);
+	p->drawLine (comienzoCuadradoX + 2 * anchoDivision, parteSuperior + divisionHorizTatarabuelos * 6,
+						 comienzoCuadradoX + 3 * anchoDivision, parteSuperior + divisionHorizTatarabuelos * 6);
+	p->drawLine (comienzoCuadradoX + 2 * anchoDivision, parteSuperior + divisionHorizTatarabuelos * 7,
+						 comienzoCuadradoX + 3 * anchoDivision, parteSuperior + divisionHorizTatarabuelos * 7);
+
+	// Texto de la parte superior:
+
+	rectangulo.setTopLeft (QPoint::QPoint (comienzoCuadradoX, comienzoCuadradoY));
+	rectangulo.setBottomRight(QPoint::QPoint (2 * anchoDivision, parteSuperior * 0.9));
+//	p->setFont(sumaFont);
+	if (arbolGenlistView->firstChild ()) {
+		QListViewItem *paloma = arbolGenlistView->firstChild ();
+		QString texto = QString("Criador: " + config().nombreP + "\n" +
+							 config().calleP + " Nº: " + config().numeroP + ", " +
+							 config().poblacionP + ", " + config().provinciaP + "\n\nAnilla: " +
+							 paloma->text(0) + "\nSexo: " + paloma->text(1) + "\nPlumaje: " +
+							 paloma->text(2) + "\nOjo: " + paloma->text(3));
+		p->drawText(rectangulo, Qt::AlignHCenter | Qt::AlignVCenter, texto);
+		rectangulo.setTopLeft (QPoint::QPoint (comienzoCuadradoX, parteSuperior * 0.9));
+		rectangulo.setBottomRight(QPoint::QPoint (comienzoCuadradoX + anchoDivision, parteSuperior));
+		p->fillRect(rectangulo, QBrush::QBrush(Qt::black));
+		p->setPen(QPen::QPen(Qt::white));
+		p->drawText(rectangulo, Qt::AlignHCenter | Qt::AlignBottom, "Padres");
+		rectangulo.setTopLeft (QPoint::QPoint (comienzoCuadradoX + anchoDivision, parteSuperior * 0.9));
+		rectangulo.setBottomRight(QPoint::QPoint (comienzoCuadradoX + 2 * anchoDivision, parteSuperior));
+		p->fillRect(rectangulo, QBrush::QBrush(Qt::black));
+		p->setPen(QPen::QPen(Qt::white));
+		p->drawText(rectangulo, Qt::AlignHCenter | Qt::AlignBottom, "Abuelos");
+		rectangulo.setTopLeft (QPoint::QPoint (comienzoCuadradoX + 2 * anchoDivision, parteSuperior * 0.9));
+		rectangulo.setBottomRight(QPoint::QPoint (comienzoCuadradoX + 3 * anchoDivision, parteSuperior));
+		p->fillRect(rectangulo, QBrush::QBrush(Qt::black));
+		p->setPen(QPen::QPen(Qt::white));
+		p->drawText(rectangulo, Qt::AlignHCenter | Qt::AlignBottom, "Bisabuelos");
+		p->setPen(QPen::QPen(Qt::black));
+		paloma = paloma->firstChild ();
+		int offset;
+		if (paloma) { // Madre o padre
+			do {
+				texto = "Anilla: " + paloma->text(0) + "\nSexo: " + paloma->text(1) +
+						  "\nPlumaje: " + paloma->text(2) + "\nOjo: " + paloma->text(3);
+				if (paloma->text(1) == "Hembra") { //Madre
+					rectangulo.setTopLeft (QPoint::QPoint (comienzoCuadradoX, parteSuperior));
+					rectangulo.setBottomRight(QPoint::QPoint (comienzoCuadradoX + anchoDivision, divisionHorizPadres));
+					p->drawText(rectangulo, Qt::AlignHCenter | Qt::AlignVCenter, texto);
+					QListViewItem *abuelo = paloma->firstChild ();
+					if (abuelo) { // Existe alguno de los abuelos maternos
+						do {
+							texto = abuelo->text(0) + " - " + abuelo->text(1) +
+							  "\nPlumaje: " + abuelo->text(2) + "\nOjo: " + abuelo->text(3);
+							if (abuelo->text(1) == "Hembra") { //Abuela Materna
+								rectangulo.setTopLeft (QPoint::QPoint (comienzoCuadradoX + anchoDivision, parteSuperior));
+								rectangulo.setBottomRight(QPoint::QPoint (comienzoCuadradoX + 2 * anchoDivision,
+																	parteSuperior + divisionHorizAbuelos));
+								p->drawText(rectangulo, Qt::AlignHCenter | Qt::AlignVCenter, texto);
+								QListViewItem *tatarabuelo = abuelo->firstChild ();
+								if (tatarabuelo) {
+									do {
+										texto = tatarabuelo->text(0);
+										if (tatarabuelo->text(1) == "Hembra") { //Tatarabuela Materna
+											offset = -1;
+											rectangulo.setTopLeft (QPoint::QPoint (comienzoCuadradoX + 2 * anchoDivision,
+																				parteSuperior + (1 + offset) * divisionHorizTatarabuelos));
+											rectangulo.setBottomRight(QPoint::QPoint (comienzoCuadradoX + 3 * anchoDivision,
+																		parteSuperior + (2 + offset) * divisionHorizTatarabuelos));
+											p->drawText(rectangulo, Qt::AlignHCenter | Qt::AlignVCenter, texto);
+										} else {
+											offset = 0;
+											rectangulo.setTopLeft (QPoint::QPoint (comienzoCuadradoX + 2 * anchoDivision,
+																				parteSuperior + (1 + offset) * divisionHorizTatarabuelos));
+											rectangulo.setBottomRight(QPoint::QPoint (comienzoCuadradoX + 3 * anchoDivision,
+																		parteSuperior + (2 + offset) * divisionHorizTatarabuelos));
+											p->drawText(rectangulo, Qt::AlignHCenter | Qt::AlignVCenter, texto);
+										}
+									} while (tatarabuelo = tatarabuelo->nextSibling ());
+								}
+							} else { //Abuelo Materno
+								rectangulo.setTopLeft (QPoint::QPoint (comienzoCuadradoX + anchoDivision,
+																	parteSuperior + divisionHorizAbuelos));
+								rectangulo.setBottomRight(QPoint::QPoint (comienzoCuadradoX + 2 * anchoDivision,
+																	parteSuperior + 2 * divisionHorizAbuelos));
+								p->drawText(rectangulo, Qt::AlignHCenter | Qt::AlignVCenter, texto);
+								QListViewItem *tatarabuelo = abuelo->firstChild ();
+								if (tatarabuelo) {
+									do {
+										texto = tatarabuelo->text(0);
+										if (tatarabuelo->text(1) == "Hembra") { //Tatarabuela Materna
+											offset = 1;
+											rectangulo.setTopLeft (QPoint::QPoint (comienzoCuadradoX + 2 * anchoDivision,
+																				parteSuperior + (1 + offset) * divisionHorizTatarabuelos));
+											rectangulo.setBottomRight(QPoint::QPoint (comienzoCuadradoX + 3 * anchoDivision,
+																		parteSuperior + (2 + offset) * divisionHorizTatarabuelos));
+											p->drawText(rectangulo, Qt::AlignHCenter | Qt::AlignVCenter, texto);
+										} else {
+											offset = 3;
+											rectangulo.setTopLeft (QPoint::QPoint (comienzoCuadradoX + 2 * anchoDivision,
+																				parteSuperior + (1 + offset) * divisionHorizTatarabuelos));
+											rectangulo.setBottomRight(QPoint::QPoint (comienzoCuadradoX + 3 * anchoDivision,
+																		parteSuperior + (2 + offset) * divisionHorizTatarabuelos));
+											p->drawText(rectangulo, Qt::AlignHCenter | Qt::AlignVCenter, texto);
+										}
+									} while (tatarabuelo = tatarabuelo->nextSibling ());
+								}
+
+							}
+						} while (abuelo = abuelo->nextSibling());
+					}
+				} else {// Padre
+					rectangulo.setTopLeft (QPoint::QPoint (comienzoCuadradoX, divisionHorizPadres));
+					rectangulo.setBottomRight(QPoint::QPoint (comienzoCuadradoX + anchoDivision, finCuadradoY));
+					p->drawText(rectangulo, Qt::AlignHCenter | Qt::AlignVCenter, texto);
+					QListViewItem *abuelo = paloma->firstChild ();
+					if (abuelo) { // Existe alguno de los abuelos paternos
+						do {
+							texto = abuelo->text(0) + " - " + abuelo->text(1) +
+							  "\nPlumaje: " + abuelo->text(2) + "\nOjo: " + abuelo->text(3);
+							if (abuelo->text(1) == "Hembra") { //Abuela Paterna
+								rectangulo.setTopLeft (QPoint::QPoint (comienzoCuadradoX + anchoDivision,
+																	parteSuperior + 2 * divisionHorizAbuelos));
+								rectangulo.setBottomRight(QPoint::QPoint (comienzoCuadradoX + 2 * anchoDivision,
+																	parteSuperior + 3 * divisionHorizAbuelos));
+								p->drawText(rectangulo, Qt::AlignHCenter | Qt::AlignVCenter, texto);
+								QListViewItem *tatarabuelo = abuelo->firstChild ();
+								if (tatarabuelo) { // Tatarabuelos por parte de la abuela materna
+									do {
+										texto = tatarabuelo->text(0);
+										if (tatarabuelo->text(1) == "Hembra") {
+											offset = 3;
+											rectangulo.setTopLeft (QPoint::QPoint (comienzoCuadradoX + 2 * anchoDivision,
+																				parteSuperior + (1 + offset) * divisionHorizTatarabuelos));
+											rectangulo.setBottomRight(QPoint::QPoint (comienzoCuadradoX + 3 * anchoDivision,
+																		parteSuperior + (2 + offset) * divisionHorizTatarabuelos));
+											p->drawText(rectangulo, Qt::AlignHCenter | Qt::AlignVCenter, texto);
+										} else {
+											offset = 4;
+											rectangulo.setTopLeft (QPoint::QPoint (comienzoCuadradoX + 2 * anchoDivision,
+																				parteSuperior + (1 + offset) * divisionHorizTatarabuelos));
+											rectangulo.setBottomRight(QPoint::QPoint (comienzoCuadradoX + 3 * anchoDivision,
+																		parteSuperior + (2 + offset) * divisionHorizTatarabuelos));
+											p->drawText(rectangulo, Qt::AlignHCenter | Qt::AlignVCenter, texto);
+										}
+									} while (tatarabuelo = tatarabuelo->nextSibling ());
+								}
+
+							} else { //Abuelo Paterno
+								rectangulo.setTopLeft (QPoint::QPoint (comienzoCuadradoX + anchoDivision,
+																	parteSuperior + 3 * divisionHorizAbuelos));
+								rectangulo.setBottomRight(QPoint::QPoint (comienzoCuadradoX + 2 * anchoDivision,
+																	parteSuperior + 4 * divisionHorizAbuelos));
+								p->drawText(rectangulo, Qt::AlignHCenter | Qt::AlignVCenter, texto);
+								QListViewItem *tatarabuelo = abuelo->firstChild ();
+								if (tatarabuelo) {
+									do {
+										texto = tatarabuelo->text(0);
+										if (tatarabuelo->text(1) == "Hembra") { //Tatarabuela Materna
+											offset = 5;
+											rectangulo.setTopLeft (QPoint::QPoint (comienzoCuadradoX + 2 * anchoDivision,
+																				parteSuperior + (1 + offset) * divisionHorizTatarabuelos));
+											rectangulo.setBottomRight(QPoint::QPoint (comienzoCuadradoX + 3 * anchoDivision,
+																		parteSuperior + (2 + offset) * divisionHorizTatarabuelos));
+											p->drawText(rectangulo, Qt::AlignHCenter | Qt::AlignVCenter, texto);
+										} else {
+											offset = 6;
+											rectangulo.setTopLeft (QPoint::QPoint (comienzoCuadradoX + 2 * anchoDivision,
+																				parteSuperior + (1 + offset) * divisionHorizTatarabuelos));
+											rectangulo.setBottomRight(QPoint::QPoint (comienzoCuadradoX + 3 * anchoDivision,
+																		parteSuperior + (2 + offset) * divisionHorizTatarabuelos));
+											p->drawText(rectangulo, Qt::AlignHCenter | Qt::AlignVCenter, texto);
+										}
+									} while (tatarabuelo = tatarabuelo->nextSibling ());
+								}
+							}
+						} while (abuelo = abuelo->nextSibling());
+					}
+				}
+			} while (paloma = paloma->nextSibling());
+		}
+	}
+	//p->setFont(sansFont);
+	int pieY = pdm.height() - margenes.height() - parteSuperior * 0.1;
+	rectangulo.setTopLeft (QPoint::QPoint (comienzoCuadradoX, pieY));
+	rectangulo.setBottomRight(QPoint::QPoint (finCuadradoX, pieY + parteSuperior * 0.1));
+	p->fillRect(rectangulo, QBrush::QBrush(Qt::gray));
+	p->setPen(QPen::QPen(Qt::white));
+	QString texto = QDate::currentDate().toString("yyyy-MM-dd");
+	p->drawText(rectangulo, Qt::AlignRight | Qt::AlignVCenter, texto);
+	p->drawText(rectangulo, Qt::AlignLeft | Qt::AlignVCenter, "http://kolombo.berlios.de/");
+
+	printer->newPage();
+	p->fillRect(rectangulo, QBrush::QBrush(Qt::gray));
+	p->setPen(QPen::QPen(Qt::white));
+	p->drawText(rectangulo, Qt::AlignRight | Qt::AlignVCenter, texto);
+	p->drawText(rectangulo, Qt::AlignLeft | Qt::AlignVCenter, "http://kolombo.berlios.de/");
+
+	rectangulo.setTopLeft (QPoint::QPoint (comienzoCuadradoX, comienzoCuadradoY));
+	rectangulo.setBottomRight(QPoint::QPoint (finCuadradoX, comienzoCuadradoY + parteSuperior * 0.1));
+	p->fillRect(rectangulo, QBrush::QBrush(Qt::black));
+	p->setPen(QPen::QPen(Qt::white));
+	texto = "Árbol genealógico completo.";
+	p->drawText(rectangulo, Qt::AlignRight | Qt::AlignVCenter, texto);
+	p->setPen(QPen::QPen(Qt::black));
+	printPedigreeRecursivo (p, comienzoCuadradoX + p->fontMetrics().width(' ') * 6,
+						 comienzoCuadradoY + p->fontMetrics().height() * 3, arbolGenlistView->firstChild ());
 }
 
-void arbolGen::subirAbuelaM() {
-	config().anillaSeleccion = abuelaMID.toInt();
-	loadData ();
-}
 
-void arbolGen::subirAbueloM() {
-	config().anillaSeleccion = abueloMID.toInt();
-	loadData ();
-}
+int arbolGen::printPedigreeRecursivo (QPainter *p, int x, int y, QListViewItem *paloma) {
+	QRect rectangulo;
+	QFontMetrics fm = p->fontMetrics();
+	int offsetX, offsetY;
+	int yInicial = y + (fm.height() / 2);
+	int yFinal = y;
+	offsetY = fm.height() * 1.5;
+	offsetX = fm.width(' ') * 3;
 
-void arbolGen::subirAbuelaP() {
-	config().anillaSeleccion = abuelaPID.toInt();
-	loadData ();
-}
-
-void arbolGen::subirAbueloP() {
-	config().anillaSeleccion = abueloPID.toInt();
-	loadData ();
+	if (not paloma)
+		return y;
+	//Horizontal
+	QString text = paloma->text(0) + " (" + paloma->text(1) + ")";
+	p->drawLine (x - offsetX, yInicial, x, yInicial);
+	p->drawEllipse (x - offsetX - fm.height() / 8, yInicial - fm.height() / 8, fm.height() / 4, fm.height() / 4);
+	rectangulo = fm.boundingRect (text);
+	rectangulo.moveTopLeft (QPoint::QPoint(x + fm.width(' '), y));
+	p->drawText(rectangulo, Qt::AlignHCenter | Qt::AlignVCenter, text);
+	// Vertical
+	y = printPedigreeRecursivo (p, x + offsetX, y + offsetY, paloma->firstChild());
+	if (yInicial + offsetY != y + (fm.height() / 2))
+		p->drawLine (x, yInicial, x, yInicial + offsetY);
+	while (paloma = paloma->nextSibling()) {
+		yFinal = y;
+		y = printPedigreeRecursivo (p, x, y, paloma);
+		p->drawLine (x - offsetX, yInicial, x - offsetX, yFinal +  + (fm.height() / 2));
+	}
+	return y;
 }

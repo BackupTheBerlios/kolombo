@@ -95,10 +95,6 @@
       </default>
     </configurations>
     <subclassing>
-      <subclass uifile="/src/buscarDlg.ui" sourcefile="/src/buscar.cpp.cpp" />
-      <subclass uifile="/src/buscarDlg.ui" sourcefile="/src/buscar.cpp.h" />
-      <subclass uifile="/src/buscarDlg.ui" sourcefile="/src/buscar.cpp" />
-      <subclass uifile="/src/buscarDlg.ui" sourcefile="/src/buscar.h" />
       <subclass uifile="/src/parejasStatsDlg.ui" sourcefile="/src/parejasstats.cpp" />
       <subclass uifile="/src/parejasStatsDlg.ui" sourcefile="/src/parejasstats.h" />
       <subclass uifile="/src/sueltasWdg.ui" sourcefile="/src/suelta.cpp" />
@@ -208,6 +204,11 @@
       <pcs>KDElibs</pcs>
       <pcs>Qt</pcs>
     </references>
+    <designerintegration>
+      <qtdesigner>
+        <implementation class="palomasImportadas" path="src/palomasimportadas.ui" implementationpath="src/palomasimportadas.h" />
+      </qtdesigner>
+    </designerintegration>
   </kdevcppsupport>
   <kdevcvsservice>
     <recursivewhenupdate>true</recursivewhenupdate>

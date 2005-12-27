@@ -96,6 +96,7 @@ void configuration::read () {
 	LEstado = conf->readNumEntry ("LEstado", 16);
 	LOjo = conf->readNumEntry ("LOjo", 114);
 	LPlumaje = conf->readNumEntry ("LPlumaje", 114);
+    LRFID = conf->readNumEntry ("LRFID", 114);
     pathTauris = conf->readEntry("pathTauris", "/mnt/windows"); 
 }
 
@@ -170,6 +171,7 @@ void configuration::write () {
 	conf->writeEntry ("LOjo", LOjo);
 	conf->writeEntry ("LPlumaje", LPlumaje);
 	conf->writeEntry ("LNombre", LNombre);
+    conf->writeEntry ("LRFID", LRFID);
     conf->writeEntry ("pathTauris", pathTauris);
 }
 

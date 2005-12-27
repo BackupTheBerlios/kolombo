@@ -53,6 +53,7 @@ public slots:
 	void contentsContextMenuEvent( QContextMenuEvent * );
 	void generalStatsSlot();
     void pigeonsTauris();
+    void importTauris();
 };
 
 #endif

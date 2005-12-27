@@ -12,6 +12,10 @@
 
 #include <arbolGenWdg.h>
 
+class QPainter;
+class KPrinter;
+class QListViewItem;
+
 /**
 @author Ren?Mart? - AgarFu
 */
@@ -23,15 +27,15 @@ public:
 
     ~arbolGen();
 
+public:
+	void addPaloma (QListViewItem *root, QString palomaID);
+	void printPedigree (QPainter *p, KPrinter * printer);
+	int printPedigreeRecursivo (QPainter *p, int x, int y, QListViewItem *paloma);
+	 
 public slots:
 	void loadData ();
 	void showEvent( QShowEvent *e );
-	void subirMadre();
-	void subirPadre();
-	void subirAbuelaM();
-	void subirAbueloM();
-	void subirAbuelaP();
-	void subirAbueloP();
+	void actualizarPalmares(QListViewItem *item);
 
 private:
 	QString palomaID, madreID, padreID, abueloMID, abuelaMID, abueloPID, abuelaPID;
