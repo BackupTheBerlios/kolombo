@@ -52,5 +52,5 @@ clean:
 	rm -f $(UIDIR)/*.pyc
 	rm -f $(DATADIR)/*.pyc
 	rm -f $(DATADIR)/es/*.pyc
-	rm -f $(LANGDIR)/es/*.qm
+	rm -f $(LANGDIR)/*.qm
 	touch $(UIDIR)/__init__.py
