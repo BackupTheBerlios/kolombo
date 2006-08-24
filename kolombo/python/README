@@ -1,0 +1,66 @@
+Kolombo3 
+========
+Kolombo 3 is a port of kolombo2 in python.
+
+Kolombo3 is a program to control a racing pigeon loft. This is free software
+licensed under the therms of the GPL version 2 or any later version.
+
+Please, if you use ths I'll be pleased to know, any sugestion or contribution
+will be appreciated.
+
+René Martín Rodríguez <agarfu@gmail.com>
+
+http://kolombo.berlios.de
+http://developer.berlios.de/projects/kolombo/
+
+
+Getting the sources:
+--------------------
+
+cvs -d:pserver:anonymous@cvs.kolombo.berlios.de:/cvsroot/kolombo login 
+ 
+cvs -z3 -d:pserver:anonymous@cvs.kolombo.berlios.de:/cvsroot/kolombo co kolombo/python 
+
+Or if you have a user at berlios:
+cvs -d <username/>@cvs.kolombo.berlios.de:/cvsroot/kolombo/ co kolombo/python 
+
+Running kolombo 3:
+------------------
+
+To run kolombo you will need python-qt4 python-qt4-sql python-qt4-xml pysqlite2
+If you are using Debian (unstable) just: 
+	apt-get install python-qt4 python-qt4-sql python-qt4-xml python2.4-pysqlite2
+
+1º.- cd kolombo/python
+2º.- make
+3º.- ./kolombo
+
+Features:
+---------
+Kolombo 3 is in a very early stage of development.
+
+I'm porting all features that the c++ version have right now, but I'm just in
+the beginings. To tell the true, this have some new features, for instance this
+have full internalization support, have a first run dialog and code to create
+the database.
+
+You can add pigeons to database, list them, list by state, print, change the
+sex, chage the state and not much more things.
+
+Teorically this version is multiplatform. I'm running it in linux ppc, if you
+run it in any other platform, please let me know <agarfu@gmail.com>
+
+The port is written in python and Qt4, when the kde4 bindigs appear I'll use
+them.
+
+TODO:
+-----
+This list is too big about now, I just want to map 1:1 the functionality of
+the c++ version and add some more things:
+
+- Plugin system for differents clocks
+- ¿Google maps support?
+- ¿GPS support?
+- Add your suggestion here
+
+Thx for reading till here. Who knows, may be some hay I improve my english.
